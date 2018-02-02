@@ -59,6 +59,8 @@ public class BookDAO {
         }
 	}
 	
+	
+	
 	private Book generateBookFromResultSet(ResultSet resultSet) throws SQLException {
 		String title = resultSet.getString("title");
 		String author = resultSet.getString("author");
