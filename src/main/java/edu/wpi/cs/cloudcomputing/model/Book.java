@@ -1,5 +1,7 @@
 package edu.wpi.cs.cloudcomputing.model;
 
+import java.util.List;
+
 public class Book {
 	private String title;
 	private String author;
@@ -8,6 +10,8 @@ public class Book {
 	private String imageUrl;
 	private String genre;
 	private Float score;
+	private List<Review> reviews;
+	private Integer recommendationCount;
 	
 	public Book() {
 		
@@ -80,4 +84,21 @@ public class Book {
 	public void setScore(Float d) {
 		this.score = d;
 	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public Integer getRecommendationCount() {
+		return recommendationCount;
+	}
+
+	public void setRecommendationCount(Integer recommendationCount) {
+		this.recommendationCount = recommendationCount;
+	}
+
 }
