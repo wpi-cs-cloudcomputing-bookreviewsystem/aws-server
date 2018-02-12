@@ -11,14 +11,14 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListAllBooksTest {
+public class ListAllCachedBooksTest {
 
     private static Object input;
 
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-        input = null;
+        input = "";
     }
 
     private Context createContext() {
@@ -31,8 +31,8 @@ public class ListAllBooksTest {
     }
 
     @Test
-    public void testListAllBooks() {
-        ListAllBooks handler = new ListAllBooks();
+    public void testListAllCachedBooks() {
+        ListAllCachedBooks handler = new ListAllCachedBooks();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);

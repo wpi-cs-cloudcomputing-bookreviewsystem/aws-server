@@ -13,9 +13,9 @@ import edu.wpi.cs.cloudcomputing.model.Book;
 public class BookDAO {
 	Connection conn;
 	String jdbcTag = "jdbc:mysql://";
-	String rdsMySqlDatabaseUrl = "was-bookreview-db-me.crb32rqtyjdg.us-east-2.rds.amazonaws.com";
+	String rdsMySqlDatabaseUrl = "book-review-db-instance.crb32rqtyjdg.us-east-2.rds.amazonaws.com";
 	String rdsMySqlDatabasePort = "3306";
-	String dbName = "BookReviewDB";
+	String dbName = "bookreviewdb";
 	String username = "";	// edit to your own
 	String password = "";	// edit to your own
 	
@@ -29,6 +29,7 @@ public class BookDAO {
 	    			username, 
 	    			password
 	    	);
+			System.out.println("Database has been connected successfully.");
 		}catch (Exception ex) {
 			throw new Exception("Failed in database connection");
 		}

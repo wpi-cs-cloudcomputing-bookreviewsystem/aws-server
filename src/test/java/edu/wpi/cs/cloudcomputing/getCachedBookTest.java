@@ -11,7 +11,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class ListAllBooksTest {
+public class getCachedBookTest {
 
     private static Object input;
 
@@ -31,12 +31,12 @@ public class ListAllBooksTest {
     }
 
     @Test
-    public void testListAllBooks() {
-        ListAllBooks handler = new ListAllBooks();
+    public void testgetCachedBook() {
+        getCachedBook handler = new getCachedBook();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
-        System.out.println(output);
+
         // TODO: validate output here if needed.
 //        Assert.assertEquals("Hello from Lambda!", output);
     }
