@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
-import edu.wpi.cs.cloudcomputing.utils.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 
 public class ListAllBooks implements RequestHandler<Object, String> {
 

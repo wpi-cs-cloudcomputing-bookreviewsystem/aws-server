@@ -1,4 +1,4 @@
-package edu.wpi.cs.cloudcomputing.utils;
+package edu.wpi.cs.cloudcomputing.messages;
 
 public class ResponseMessage {
 	private String status;
