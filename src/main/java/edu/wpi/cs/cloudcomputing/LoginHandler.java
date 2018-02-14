@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
+import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
@@ -34,13 +35,14 @@ public class LoginHandler implements RequestHandler<Object, String> {
         UserManager userManager = new UserManager();
         try {       	
         	
-        	String responseContent = userManager.login(loginMessage);
-        	if (responseContent.equals(LOGGED_IN)) {
-        		responseMsg.setStatus("SUCCESS");
-            	responseMsg.setContent(responseContent);
+        	AWSLoginResponseMessage awsResponseMessage = userManager.login(loginMessage);
+        	if (awsResponseMessage.getStatus().equals(LOGGED_IN)) {
+        		responseMsg.setStatus("SUCCESS");        		
+        		String content = gson.toJson(awsResponseMessage);
+        		responseMsg.setContent(content);
         	}
         	else {
-        		throw new Exception(responseContent);
+        		throw new Exception(awsResponseMessage.getStatus());
         	}
         }
         catch(Exception ex) {

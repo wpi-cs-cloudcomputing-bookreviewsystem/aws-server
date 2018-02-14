@@ -1,5 +1,5 @@
 // Copyright (c) Keith D Gregory, all rights reserved
-package com.kdgregory.example.cognito.util;
+package edu.wpi.cs.cloudcomputing.utils;
 
 import java.io.Serializable;
 import java.util.Collections;

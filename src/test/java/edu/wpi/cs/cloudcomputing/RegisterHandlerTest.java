@@ -23,8 +23,9 @@ public class RegisterHandlerTest {
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
     	UserRegisterMessage msg = new UserRegisterMessage();
-    	msg.setEmail("test@email.com");
-    	msg.setUsername("tester");
+    	msg.setEmail("test2@email.com");
+    	msg.setUsername("testUser2");
+    	msg.setPassword("Password1234!");
     	Gson gson = new GsonBuilder().create();
         input = gson.toJson(msg);
     }
