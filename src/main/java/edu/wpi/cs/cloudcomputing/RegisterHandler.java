@@ -10,6 +10,9 @@ import edu.wpi.cs.cloudcomputing.controller.UserManager;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 
+import static edu.wpi.cs.cloudcomputing.utils.Common.LOGGED_IN;
+import static edu.wpi.cs.cloudcomputing.utils.Common.USER_CREATED;
+
 public class RegisterHandler implements RequestHandler<Object, String> {
 
     @Override
@@ -33,7 +36,7 @@ public class RegisterHandler implements RequestHandler<Object, String> {
         try {       	
         	
         	String responseContent = userManager.register(registerMessage);
-        	if (responseContent.equals("success")) {
+        	if (responseContent.equals(USER_CREATED)) {
         		responseMsg.setStatus("SUCCESS");
             	responseMsg.setContent(responseContent);
         	}

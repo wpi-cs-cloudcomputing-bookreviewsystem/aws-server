@@ -10,6 +10,9 @@ import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 
+import static edu.wpi.cs.cloudcomputing.utils.Common.LOGGED_IN;
+import static edu.wpi.cs.cloudcomputing.utils.Common.USER_CREATED;
+
 public class LoginHandler implements RequestHandler<Object, String> {
 
     @Override
@@ -19,7 +22,7 @@ public class LoginHandler implements RequestHandler<Object, String> {
     	UserLoginMessage loginMessage = null;
         try {
         	loginMessage = gson.fromJson(input.toString(), UserLoginMessage.class);
-        	if (loginMessage == null || loginMessage.getUsername() == null || loginMessage.getPassword() == null) {
+        	if (loginMessage == null || loginMessage.getEmail() == null || loginMessage.getPassword() == null) {
         		throw new Exception();
         	}
         }catch (Exception ex) {
@@ -32,7 +35,7 @@ public class LoginHandler implements RequestHandler<Object, String> {
         try {       	
         	
         	String responseContent = userManager.login(loginMessage);
-        	if (responseContent.equals("success")) {
+        	if (responseContent.equals(LOGGED_IN)) {
         		responseMsg.setStatus("SUCCESS");
             	responseMsg.setContent(responseContent);
         	}
