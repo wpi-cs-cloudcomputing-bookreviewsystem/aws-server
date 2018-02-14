@@ -4,8 +4,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClient;
 import com.amazonaws.services.cognitoidp.model.*;
 
+import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
+import edu.wpi.cs.cloudcomputing.utils.Common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +55,10 @@ public class UserManager {
         return responseMessage;
     }
 
-    public String login(UserLoginMessage loginMessage) {
+    public AWSLoginResponseMessage login(UserLoginMessage loginMessage) {
         String password = loginMessage.getPassword();
         String emailAddress = loginMessage.getEmail();
-        String responseMessage = "";
+        AWSLoginResponseMessage responseMessage = new AWSLoginResponseMessage();
 
         try {
             Map<String, String> authParams = new HashMap<String, String>();
@@ -67,29 +69,35 @@ public class UserManager {
                     .withAuthParameters(authParams)
                     .withClientId(cognito_client_id)
                     .withUserPoolId(cognito_pool_id);
-
             AdminInitiateAuthResult authResponse = cognitoClient.adminInitiateAuth(authRequest);
-
-            if (authResponse.getChallengeName().length() == 0) {
-
+            if (authResponse.getChallengeName() == null) {
+            	String accessToken = authResponse.getAuthenticationResult().getAccessToken();
+            	String refreshToken = authResponse.getAuthenticationResult().getRefreshToken();
+            	responseMessage.setStatus(LOGGED_IN);
+            	responseMessage.setAccessToken(accessToken);
+            	responseMessage.setRefreshToken(refreshToken);
             }
+            
         } catch (UserNotFoundException ex) {
-            responseMessage = NO_SUCH_USER;
+            responseMessage.setStatus(NO_SUCH_USER);;
             System.out.println(responseMessage);
         } catch (NotAuthorizedException ex) {
-            responseMessage = NO_SUCH_USER;
+        	responseMessage.setStatus(NO_SUCH_USER);
             System.out.println(responseMessage);
         } catch (TooManyRequestsException ex) {
-            responseMessage = "caught TooManyRequestsException, delaying then retrying";
+        	responseMessage.setStatus("caught TooManyRequestsException, delaying then retrying");
             System.out.println(responseMessage);
-        }
+        } catch (Exception e) {
+        	responseMessage.setStatus("Unexpected error");
+            System.out.println(e.getMessage());
+		}
         return responseMessage;
     }
 
-    public String verify() {
+    public AWSLoginResponseMessage verify() {
         String accessToken = "";
         String refreshToken = "";
-        String responseMessage = "";
+        AWSLoginResponseMessage responseMessage = new AWSLoginResponseMessage();
 
         try {
             GetUserRequest authRequest = new GetUserRequest().withAccessToken(accessToken);
@@ -97,23 +105,26 @@ public class UserManager {
 
             System.out.printf("successful validation for %s", authResponse.getUsername());
             //tokenCache.addToken(accessToken);
-            responseMessage = LOGGED_IN;
+            responseMessage.setStatus(LOGGED_IN);
         } catch (NotAuthorizedException ex) {
             if (ex.getErrorMessage().equals("Access Token has expired")) {
                 return attemptRefreshToken(refreshToken);
             } else {
                 System.out.printf("exception during validation: %s", ex.getMessage());
-                responseMessage = NOT_LOGGED_IN;
+                responseMessage.setStatus(NOT_LOGGED_IN);
             }
         } catch (TooManyRequestsException ex) {
-            responseMessage = "caught TooManyRequestsException, delaying then retrying";
-            System.out.println(responseMessage);
-        }
+        	responseMessage.setStatus("caught TooManyRequestsException, delaying then retrying");
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+        	responseMessage.setStatus("unexpected error");
+            System.out.println(ex.getMessage());
+		}
         return responseMessage;
     }
 
-    public String attemptRefreshToken(String refreshToken) {
-        String responseMessage = "";
+    public AWSLoginResponseMessage attemptRefreshToken(String refreshToken) {
+    	AWSLoginResponseMessage responseMessage = new AWSLoginResponseMessage();
 
         try
         {
@@ -133,16 +144,21 @@ public class UserManager {
 
                 System.out.println("successfully refreshed token");
                 //updateCredentialCookies(response, refreshResponse.getAuthenticationResult());
-                responseMessage = LOGGED_IN;
+                
+                String newAccessToken = refreshResponse.getAuthenticationResult().getAccessToken();
+                String newRefreshToken = refreshResponse.getAuthenticationResult().getRefreshToken();
+                responseMessage.setStatus(LOGGED_IN);
+                responseMessage.setAccessToken(newAccessToken);
+                responseMessage.setRefreshToken(newRefreshToken);
             }
             else
             {
                 System.out.printf("unexpected challenge when refreshing token: %s", refreshResponse.getChallengeName());
-                responseMessage = NOT_LOGGED_IN;
+                responseMessage.setStatus(NOT_LOGGED_IN);
             }
         } catch (TooManyRequestsException ex) {
-            responseMessage = "caught TooManyRequestsException, delaying then retrying";
-            System.out.println(responseMessage);
+            responseMessage.setStatus("caught TooManyRequestsException, delaying then retrying");
+            System.out.println(ex.getMessage());
         }
 
         return responseMessage;
