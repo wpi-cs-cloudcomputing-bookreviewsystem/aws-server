@@ -13,4 +13,12 @@ public class Common {
     public final static String USER_ALREADY_EXISTS = "USER ALREADY EXISTS";
     public final static String USER_CREATED = "USER CREATED";
 
+    
+    // database
+    public final static String jdbcTag = "jdbc:mysql://";
+    public final static String rdsMySqlDatabaseUrl = "";
+	public final static String rdsMySqlDatabasePort = "3306";
+    public final static String dbName = "bookreviewdb";
+    public final static String dbUsername = "";
+    public final static String dbPassword = "";
 }

@@ -73,15 +73,6 @@
 		    <artifactId>aws-java-sdk-cognitoidp</artifactId>
 		</dependency>
 
-
-		<dependency>
-		  <groupId>com.amazonaws</groupId>
-		  <artifactId>aws-java-sdk</artifactId>
-		  <version>1.11.106</version>
-		</dependency>
-
-
-
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
