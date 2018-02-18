@@ -7,27 +7,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class LoginHandlerTest {
+public class MyProfileHandlerTest {
 
     private static Object input;
 
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-    	UserLoginMessage msg = new UserLoginMessage();
-    	msg.setEmail("email6@tester.com");
-    	msg.setPassword("Password1234!");
-    	Gson gson = new GsonBuilder().create();
-        input = gson.toJson(msg);
+        input = null;
     }
 
     private Context createContext() {
@@ -40,12 +31,13 @@ public class LoginHandlerTest {
     }
 
     @Test
-    public void testLoginHandler() {
-        LoginHandler handler = new LoginHandler();
+    public void testMyProfileHandler() {
+        MyProfileHandler handler = new MyProfileHandler();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
 
-        System.out.println(output);
+        // TODO: validate output here if needed.
+        Assert.assertEquals("Hello from Lambda!", output);
     }
 }

@@ -5,16 +5,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.wpi.cs.cloudcomputing.model.Book;
+import edu.wpi.cs.cloudcomputing.model.User;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
-public class BookDAO {
+public class UserDAO {
 	
 	Connection conn;	
-	public BookDAO(){}
+	public UserDAO(){}
 	
 	private void initDBConnection() throws Exception {
 		try {
@@ -29,42 +26,42 @@ public class BookDAO {
 			throw new Exception("Failed in database connection");
 		}
 	}
-
-	public List<Book> getAllBooks() throws Exception{
+	
+	public User getUser(String emailAddress) throws Exception{
 		if (conn == null) {
 			initDBConnection();
 		}
-		List<Book> allBooks = new ArrayList<>();
+
 		try {
+			User user = null;
+			
         	Statement statement = conn.createStatement();
-        	String query = "SELECT * FROM books";
+        	String query = "SELECT * FROM books where email=" + emailAddress;
         	ResultSet resultSet = statement.executeQuery(query);
 
         	while (resultSet.next()) {
-        		Book book = generateBookFromResultSet(resultSet);
-        		allBooks.add(book);       		
+        		user = generateUserFromResultSet(resultSet);     		
         	}
+        	if (user == null) {
+        		throw new Exception("User not found");
+        	}
+        	
         	resultSet.close();
         	statement.close();
         	conn.close();
         	
-        	return allBooks;
+        	return user;
         	
         }catch (Exception e) {
-        	throw new Exception("Failed in getting books: " + e.getMessage());
+        	throw new Exception("Failed in getting user: " + e.getMessage());
         }
 	}
 	
-	
-	
-	private Book generateBookFromResultSet(ResultSet resultSet) throws SQLException {
-		String title = resultSet.getString("title");
-		String author = resultSet.getString("author");
-		String ISBN = resultSet.getString("ISBN");
-		String description = resultSet.getString("description");
-		String imageUrl = resultSet.getString("imageUrl");
-		String genre = resultSet.getString("genre");
-		Float score = Float.valueOf(resultSet.getString("score"));
-		return new Book(title, author, ISBN, description, imageUrl, genre, score);
+	private User generateUserFromResultSet(ResultSet resultSet) throws SQLException {
+		User user = new User();
+		user.setUsername(resultSet.getString("username"));
+		user.setEmail(resultSet.getString("email"));
+		return user;
 	}
+	
 }
