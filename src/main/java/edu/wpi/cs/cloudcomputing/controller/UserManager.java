@@ -70,12 +70,16 @@ public class UserManager {
                     .withClientId(cognito_client_id)
                     .withUserPoolId(cognito_pool_id);
             AdminInitiateAuthResult authResponse = cognitoClient.adminInitiateAuth(authRequest);
+            
             if (authResponse.getChallengeName() == null) {
             	String accessToken = authResponse.getAuthenticationResult().getAccessToken();
             	String refreshToken = authResponse.getAuthenticationResult().getRefreshToken();
+            	String idToken = authResponse.getAuthenticationResult().getIdToken();
+            	System.out.println(idToken);
             	responseMessage.setStatus(LOGGED_IN);
             	responseMessage.setAccessToken(accessToken);
             	responseMessage.setRefreshToken(refreshToken);
+            	responseMessage.setIdToken(idToken);
             }
             
         } catch (UserNotFoundException ex) {
@@ -93,7 +97,13 @@ public class UserManager {
 		}
         return responseMessage;
     }
-
+    
+    
+//    We dont need the following verify function and attemptRefreshToken function because 
+//    if these two are used for authentication in each lambda function, each lambda function has to be in POST method 
+//    Instead, we put the iDtoken in http headers, which can be validated in API gateway. In this case, users that have reach lambda function are already validated.
+    
+    /**
     public AWSLoginResponseMessage verify() {
         String accessToken = "";
         String refreshToken = "";
@@ -163,4 +173,5 @@ public class UserManager {
 
         return responseMessage;
     }
+    */
 }

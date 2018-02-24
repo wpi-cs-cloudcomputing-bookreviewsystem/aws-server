@@ -5,6 +5,7 @@ public class AWSLoginResponseMessage {
 	private String status;
 	private String accessToken;
 	private String refreshToken;
+	private String idToken;
 	public String getStatus() {
 		return status;
 	}
@@ -22,6 +23,12 @@ public class AWSLoginResponseMessage {
 	}
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
+	}
+	public String getIdToken() {
+		return idToken;
+	}
+	public void setIdToken(String idToken) {
+		this.idToken = idToken;
 	}
 	
 	
