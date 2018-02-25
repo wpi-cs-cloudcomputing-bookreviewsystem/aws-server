@@ -22,12 +22,13 @@ public class RegisterHandlerTest {
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-    	UserRegisterMessage msg = new UserRegisterMessage();
-    	msg.setEmail("TestUser02244@tester.com");
-    	msg.setUsername("TestUser0224");
-    	msg.setPassword("Password1234!");
-    	Gson gson = new GsonBuilder().create();
-        input = gson.toJson(msg);
+//    	UserRegisterMessage msg = new UserRegisterMessage();
+//    	msg.setEmail("TestUser022417@tester.com");
+//    	msg.setUsername("TestUser02417");
+//    	msg.setPassword("Password1234!");
+//    	Gson gson = new GsonBuilder().create();
+//        input = gson.toJson(msg);
+    	input = "{\"username\": \"TestUser022419\",\"email\": \"TestUser022419@tester.com\",\"password\": \"Password1234!\"}";
     }
 
     private Context createContext() {
@@ -43,7 +44,7 @@ public class RegisterHandlerTest {
     public void testRegisterHandler() {
         RegisterHandler handler = new RegisterHandler();
         Context ctx = createContext();
-
+        System.out.println(input);
         String output = handler.handleRequest(input, ctx);
         System.out.println(output);
         // TODO: validate output here if needed.

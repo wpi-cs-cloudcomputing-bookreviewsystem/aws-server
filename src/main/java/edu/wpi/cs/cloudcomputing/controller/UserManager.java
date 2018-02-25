@@ -48,8 +48,7 @@ public class UserManager {
                             new AttributeType()
                                     .withName("email")
                                     .withValue(emailAddress));
-            cognitoClient.signUp(cognitoRequest);      
-            this.userDAO.saveUser(new User(username, emailAddress));            
+            cognitoClient.signUp(cognitoRequest);               
             responseMessage = USER_CREATED;
         } catch (UsernameExistsException ex) {
             responseMessage = USER_ALREADY_EXISTS;
@@ -59,6 +58,22 @@ public class UserManager {
             System.out.println(responseMessage);
         } catch (Exception e) {
             responseMessage = "other error";
+            System.out.println(e.getMessage());
+        }
+
+        return responseMessage;
+    }
+    
+    public String registerUserToApp(UserRegisterMessage registerMessage) {
+    	String username = registerMessage.getUsername();
+        String emailAddress = registerMessage.getEmail();
+        String responseMessage = "";
+
+        try {
+            this.userDAO.saveUser(new User(username, emailAddress));              
+            responseMessage = USER_CREATED;
+        } catch (Exception e) {
+            responseMessage = e.getMessage();
             System.out.println(e.getMessage());
         }
 
