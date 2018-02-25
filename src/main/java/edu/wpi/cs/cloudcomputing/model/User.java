@@ -8,6 +8,13 @@ public class User {
 	private String email;
 	private List<User> friends;
 	private List<PrivateMessage> privateMessages;
+	
+	public User() {}
+	
+	public User(String username, String email) {
+		this.username = username;
+		this.email = email;
+	}
 
 	public String getUsername() {
 		return username;

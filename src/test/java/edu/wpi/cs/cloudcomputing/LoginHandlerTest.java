@@ -24,7 +24,7 @@ public class LoginHandlerTest {
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
     	UserLoginMessage msg = new UserLoginMessage();
-    	msg.setEmail("email6@tester.com");
+    	msg.setEmail("TestUser02242@tester.com");
     	msg.setPassword("Password1234!");
     	Gson gson = new GsonBuilder().create();
         input = gson.toJson(msg);
@@ -34,7 +34,7 @@ public class LoginHandlerTest {
         TestContext ctx = new TestContext();
 
         // TODO: customize your context here if needed.
-        ctx.setFunctionName("Your Function Name");
+        ctx.setFunctionName("LoginHandler");
 
         return ctx;
     }

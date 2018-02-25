@@ -3,10 +3,15 @@ package edu.wpi.cs.cloudcomputing.controller;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClient;
 import com.amazonaws.services.cognitoidp.model.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import edu.wpi.cs.cloudcomputing.database.UserDAO;
 import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
+import edu.wpi.cs.cloudcomputing.messages.StatusMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
+import edu.wpi.cs.cloudcomputing.model.User;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
 import java.util.HashMap;
@@ -17,15 +22,19 @@ import static edu.wpi.cs.cloudcomputing.utils.Common.*;
 public class UserManager {
 
     protected AWSCognitoIdentityProviderClient cognitoClient;
+    private UserDAO userDAO;
+    private Gson gson = new Gson();
 
     @SuppressWarnings("deprecation")
     public UserManager() {
         BasicAWSCredentials credentials = new BasicAWSCredentials(access_key, secret_key);
         this.cognitoClient = new AWSCognitoIdentityProviderClient(credentials);
+        this.userDAO = new UserDAO();
     }
 
     public String register(UserRegisterMessage registerMessage) {
 
+    	String username = registerMessage.getUsername();
         String password = registerMessage.getPassword();
         String emailAddress = registerMessage.getEmail();
         String responseMessage = "";
@@ -39,7 +48,8 @@ public class UserManager {
                             new AttributeType()
                                     .withName("email")
                                     .withValue(emailAddress));
-            cognitoClient.signUp(cognitoRequest);
+            cognitoClient.signUp(cognitoRequest);      
+            this.userDAO.saveUser(new User(username, emailAddress));            
             responseMessage = USER_CREATED;
         } catch (UsernameExistsException ex) {
             responseMessage = USER_ALREADY_EXISTS;
@@ -48,7 +58,7 @@ public class UserManager {
             responseMessage = "caught TooManyRequestsException, delaying then retrying";
             System.out.println(responseMessage);
         } catch (Exception e) {
-            responseMessage = "Unexpected error";
+            responseMessage = "other error";
             System.out.println(e.getMessage());
         }
 
@@ -75,7 +85,9 @@ public class UserManager {
             	String accessToken = authResponse.getAuthenticationResult().getAccessToken();
             	String refreshToken = authResponse.getAuthenticationResult().getRefreshToken();
             	String idToken = authResponse.getAuthenticationResult().getIdToken();
+            	System.out.println("");
             	System.out.println(idToken);
+            	System.out.println("");
             	responseMessage.setStatus(LOGGED_IN);
             	responseMessage.setAccessToken(accessToken);
             	responseMessage.setRefreshToken(refreshToken);
@@ -96,6 +108,20 @@ public class UserManager {
             System.out.println(e.getMessage());
 		}
         return responseMessage;
+    }
+    
+    public StatusMessage getUserProfile(String email) {
+    	StatusMessage statusMessage = new StatusMessage();
+    	try {
+    		User user = userDAO.getUser(email);    		
+    		statusMessage.setStatus(Common.SUCCESS);
+    		statusMessage.setMessage(gson.toJson(user, User.class));	
+    	}
+    	catch (Exception ex) {
+    		statusMessage.setStatus(Common.FAILURE);
+    		statusMessage.setMessage(ex.getMessage());
+    	}
+    	return statusMessage;
     }
     
     
