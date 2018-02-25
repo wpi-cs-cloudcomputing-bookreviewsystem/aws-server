@@ -27,6 +27,39 @@ public class UserDAO {
 		}
 	}
 	
+	public void saveUser(User user) throws Exception {
+		if (conn == null) {
+			initDBConnection();
+		}		
+		try {			
+			Statement statement = conn.createStatement();
+        	User existingUser = null;
+			String searchQuery = "SELECT * FROM User WHERE email='" + user.getEmail() + "';";
+			System.out.println(searchQuery);
+        	ResultSet resultSet = statement.executeQuery(searchQuery);
+        	while (resultSet.next()) {
+        		existingUser = generateUserFromResultSet(resultSet);     		
+        	}			
+        	if (existingUser != null) {
+        		throw new Exception("User already exists");
+        	}
+
+        	String insertQuery = "INSERT INTO User (id, username, email) VALUES (null, '" + user.getUsername() + "', '" + user.getEmail() + "')";
+        	statement.executeUpdate(insertQuery);
+
+        	resultSet.close();
+        	statement.close();
+        	conn.close();
+        	
+        }catch (Exception e) {
+        	throw new Exception("Failed in getting user: " + e.getMessage());
+        }finally {
+        	if (conn != null) {
+        		conn.close();
+        	}
+        }
+	}
+	
 	public User getUser(String emailAddress) throws Exception{
 		if (conn == null) {
 			initDBConnection();
@@ -36,7 +69,7 @@ public class UserDAO {
 			User user = null;
 			
         	Statement statement = conn.createStatement();
-        	String query = "SELECT * FROM books where email=" + emailAddress;
+        	String query = "SELECT * FROM User WHERE email='" + emailAddress + "';";
         	ResultSet resultSet = statement.executeQuery(query);
 
         	while (resultSet.next()) {
@@ -54,6 +87,10 @@ public class UserDAO {
         	
         }catch (Exception e) {
         	throw new Exception("Failed in getting user: " + e.getMessage());
+        }finally {
+        	if (conn != null) {
+        		conn.close();
+        	}
         }
 	}
 	
