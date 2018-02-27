@@ -12,20 +12,19 @@ public class Common {
     public final static String NO_SUCH_USER = "NO SUCH USER";
     public final static String USER_ALREADY_EXISTS = "USER ALREADY EXISTS";
     public final static String USER_CREATED = "USER CREATED";
-    
-    
-    
+
+
     public final static String SUCCESS = "SUCCESS";
     public final static String FAILURE = "FAILURE";
     public final static String BAD_REQUEST = "BAD REQUEST";
 
-    
+
     // database
     public final static String jdbcTag = "jdbc:mysql://";
-    public final static String rdsMySqlDatabaseUrl = "book-review-db-instance.crb32rqtyjdg.us-east-2.rds.amazonaws.com";
-	public final static String rdsMySqlDatabasePort = "3306";
-    public final static String dbName = "bookreviewdb";
+    public final static String rdsMySqlDatabaseUrl = "book-review-final-instance.crb32rqtyjdg.us-east-2.rds.amazonaws.com";
+    public final static String rdsMySqlDatabasePort = "3306";
+    public final static String dbName = "BookReviewDB";
     public final static String dbUsername = "admin";
-    public final static String dbPassword = "bookreviewadmin";
+    public final static String dbPassword = "Bookreviewadmin";
 
 }
