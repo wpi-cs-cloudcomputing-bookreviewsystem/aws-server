@@ -44,7 +44,7 @@ public class BookDAO {
         List<Book> allBooks = new ArrayList<>();
         try {
             Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM book";
+            String query = "SELECT * FROM Book";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -71,7 +71,7 @@ public class BookDAO {
             Book book = null;
 
             Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM User WHERE email='" + bookISBN + "';";
+            String query = "SELECT * FROM Book WHERE book_isbn='" + bookISBN + "';";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -145,13 +145,13 @@ public class BookDAO {
         return columns + values;
     }
 
-//	public static void main(String[] args)  {
-//		BookDAO bookDAO = new BookDAO();
-//		try {
-//			List<Book> bookList = bookDAO.getAllBooks();
-//			System.out.println(bookList.size());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args)  {
+		BookDAO bookDAO = new BookDAO();
+		try {
+			List<Book> bookList = bookDAO.getAllBooks();
+			System.out.println(bookList.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
