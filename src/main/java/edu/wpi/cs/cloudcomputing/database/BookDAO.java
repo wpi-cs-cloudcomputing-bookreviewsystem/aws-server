@@ -145,13 +145,13 @@ public class BookDAO {
         return columns + values;
     }
 
-	public static void main(String[] args)  {
-		BookDAO bookDAO = new BookDAO();
-		try {
-			List<Book> bookList = bookDAO.getAllBooks();
-			System.out.println(bookList.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args)  {
+//		BookDAO bookDAO = new BookDAO();
+//		try {
+//			List<Book> bookList = bookDAO.getAllBooks();
+//			System.out.println(bookList.size());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
