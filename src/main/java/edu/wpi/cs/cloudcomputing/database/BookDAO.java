@@ -1,45 +1,26 @@
 package edu.wpi.cs.cloudcomputing.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.sun.org.apache.regexp.internal.RE;
 import edu.wpi.cs.cloudcomputing.model.Book;
 import edu.wpi.cs.cloudcomputing.model.Review;
-import edu.wpi.cs.cloudcomputing.model.User;
-import edu.wpi.cs.cloudcomputing.utils.Common;
 
 public class BookDAO {
 
-    //Connection conn;
     DatabaseUtil databaseUtil;
 
     public BookDAO() {
         databaseUtil = new DatabaseUtil();
     }
 
-    private void initDBConnection() throws Exception {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            databaseUtil.conn = DriverManager.getConnection(
-                    Common.jdbcTag + Common.rdsMySqlDatabaseUrl + ":" + Common.rdsMySqlDatabasePort + "/" + Common.dbName,
-                    Common.dbUsername,
-                    Common.dbPassword
-            );
-            System.out.println("Database has been connected successfully.");
-        } catch (Exception ex) {
-            throw new Exception("Failed in database connection");
-        }
-    }
 
     public List<Book> getAllBooks() throws Exception {
         if (databaseUtil.conn == null) {
-            initDBConnection();
+            databaseUtil.initDBConnection();
         }
         List<Book> allBooks = new ArrayList<>();
         try {
@@ -64,7 +45,7 @@ public class BookDAO {
 
     public Book getBook(String bookISBN) throws Exception {
         if (databaseUtil.conn == null) {
-            initDBConnection();
+            databaseUtil.initDBConnection();
         }
 
         try {
@@ -98,12 +79,12 @@ public class BookDAO {
 
     public boolean addBookWithReview(Book book) throws Exception {
         if (databaseUtil.conn == null) {
-            initDBConnection();
+            databaseUtil.initDBConnection();
         }
         String bookISBN = book.getISBN();
         try {
             Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM book WHERE book_isbn = " + bookISBN + ";";
+            String query = "SELECT * FROM Book WHERE book_isbn = '" + bookISBN + "';";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -127,31 +108,42 @@ public class BookDAO {
     }
 
 
-    private Book generateBookFromResultSet(ResultSet resultSet) throws SQLException {
-        String title = resultSet.getString("title");
-        String author = resultSet.getString("author");
-        String ISBN = resultSet.getString("ISBN");
-        String description = resultSet.getString("description");
-        String imageUrl = resultSet.getString("imageUrl");
-        String genre = resultSet.getString("genre");
-        Float score = Float.valueOf(resultSet.getString("score"));
+    private Book generateBookFromResultSet(ResultSet resultSet) throws Exception {
+        String title = resultSet.getString("book_title");
+        String author = resultSet.getString("book_author");
+        String ISBN = resultSet.getString("book_isbn");
+        String description = resultSet.getString("book_description");
+        String imageUrl = resultSet.getString("book_image_Url");
+        String genre = resultSet.getString("book_genre");
+        RatingDAO ratingDAO = new RatingDAO();
+        Float score = ratingDAO.getAvergeRatingFromBookISBN(ISBN);
         return new Book(title, author, ISBN, description, imageUrl, genre, score);
     }
 
     private String insertBookQuery(Book book) {
-        String columns = "INSERT INTO book (title, author, ISBN, decription, imageUrl, genre, score)";
-        String values = "values (" + book.getTitle() + "," + book.getAuthor() + "," + book.getISBN() + ","
-                + book.getDescription() + "," + book.getImageUrl() + "," + book.getGenre() + "," + book.getScore() + ");";
+        String columns = "INSERT INTO Book (book_title, book_author, book_isbn, book_description, book_image_Url, book_genre)";
+        String values = "values ('" + book.getTitle() + "','" + book.getAuthor() + "','" + book.getISBN() + "','"
+                + book.getDescription() + "','" + book.getImageUrl() + "','" + book.getGenre() + "');";
         return columns + values;
     }
 
-//	public static void main(String[] args)  {
-//		BookDAO bookDAO = new BookDAO();
-//		try {
-//			List<Book> bookList = bookDAO.getAllBooks();
-//			System.out.println(bookList.size());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+    public static void main(String[] args) {
+        BookDAO bookDAO = new BookDAO();
+        try {
+
+            Book book = new Book("title", "author",
+                    "test1", "description", null, "genre", 4.5f);
+            Review review = null;
+            List<Review> reviewList = new LinkedList<>();
+            reviewList.add(review);
+            book.setReviews(reviewList);
+
+            Book book1 = bookDAO.getBook("test1");
+            System.out.println(book1.getGenre());
+            System.out.println(book1.getScore());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
