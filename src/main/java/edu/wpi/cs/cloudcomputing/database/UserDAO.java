@@ -18,23 +18,9 @@ public class UserDAO {
         databaseUtil = new DatabaseUtil();
     }
 
-    private void initDBConnection() throws Exception {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            databaseUtil.conn = DriverManager.getConnection(
-                    Common.jdbcTag + Common.rdsMySqlDatabaseUrl + ":" + Common.rdsMySqlDatabasePort + "/" + Common.dbName,
-                    Common.dbUsername,
-                    Common.dbPassword
-            );
-            System.out.println("Database has been connected successfully.");
-        } catch (Exception ex) {
-            throw new Exception("Failed in database connection");
-        }
-    }
-
     public void saveUser(User user) throws Exception {
         if (databaseUtil.conn == null) {
-            initDBConnection();
+            databaseUtil.initDBConnection();
         }
         try {
             Statement statement = databaseUtil.conn.createStatement();
@@ -67,7 +53,7 @@ public class UserDAO {
 
     public User getUser(String emailAddress) throws Exception {
         if (databaseUtil.conn == null) {
-            initDBConnection();
+            databaseUtil.initDBConnection();
         }
 
         try {
@@ -106,17 +92,16 @@ public class UserDAO {
         return user;
     }
 
-    public static void main(String[] args) {
-        UserDAO userDAO = new UserDAO();
-        User u = new User();
-        u.setEmail("ddd@ddd.ccc");
-        u.setUsername("name");
-        try {
-            User test = userDAO.getUser("ddd@ddd.ccc");
-            System.out.println(test.getUsername());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        UserDAO userDAO = new UserDAO();
+//        User user1 = new User("USER1", "USER1@EMAIL.COM");
+//        User user2 = new User("USER2", "USER2@EMAIL.COM");
+//        try {
+//            userDAO.saveUser(user2);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }
