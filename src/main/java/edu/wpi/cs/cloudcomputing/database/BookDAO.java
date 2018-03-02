@@ -145,21 +145,22 @@ public class BookDAO {
         return columns + values;
     }
 
-    public static void main(String[] args) {
-        BookDAO bookDAO = new BookDAO();
-        try {
-
-            Book book = new Book("title3", "author",
-                    "test2", "description", null, "genre", 4.5f);
-            Review review = null;
-            List<Review> reviewList = new LinkedList<>();
-            reviewList.add(review);
-            book.setReviews(reviewList);
-
-            Boolean res = bookDAO.addBook(book);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        BookDAO bookDAO = new BookDAO();
+//        try {
+//
+//            Book demoBook = new Book();
+//        demoBook.setTitle("Animals in Translation");
+//        demoBook.setAuthor("Temple Grandin, Catherine Johnson");
+//        demoBook.setDescription("In this exciting new e edition, Temple Grandin returns to her groundbreaking work, Animals in Translation, to address the last ten years of developments in behavioral research, animal welfare, and farming regulations. Originally published in 2005, Animals in Translation received unanimous critical praise and was a bestseller in both hardcover and paperback, and Grandin’s Q&A updates this classic text with the most current scientific research.");
+//        demoBook.setGenre("Animal");
+//        demoBook.setISBN("0156031442");
+//        demoBook.setScore((float) 4.5);
+//        demoBook.setImageUrl("http://www.templegrandin.com/_images/_books/AnimalsAutismTemple.png");
+//            Boolean res = bookDAO.addBook(demoBook);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

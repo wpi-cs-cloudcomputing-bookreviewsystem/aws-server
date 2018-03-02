@@ -32,7 +32,7 @@ public class getCachedBookTest {
 
     @Test
     public void testgetCachedBook() {
-        getCachedBook handler = new getCachedBook();
+        GetBookDetail handler = new GetBookDetail();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
