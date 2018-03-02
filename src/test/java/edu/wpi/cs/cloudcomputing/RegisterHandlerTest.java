@@ -28,7 +28,7 @@ public class RegisterHandlerTest {
 //    	msg.setPassword("Password1234!");
 //    	Gson gson = new GsonBuilder().create();
 //        input = gson.toJson(msg);
-    	input = "{\"username\": \"TestUser022419\",\"email\": \"TestUser022419@tester.com\",\"password\": \"Password1234!\"}";
+    	input = "{\"username\": \"TestUse\",\"email\": \"TestUser@tester.com\",\"password\": \"Password1234!\"}";
     }
 
     private Context createContext() {
