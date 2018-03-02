@@ -50,6 +50,8 @@ public class UserManager {
                                     .withValue(emailAddress));
             cognitoClient.signUp(cognitoRequest);               
             responseMessage = USER_CREATED;
+            registerUserToApp(registerMessage);
+
         } catch (UsernameExistsException ex) {
             responseMessage = USER_ALREADY_EXISTS;
             System.out.println(responseMessage);

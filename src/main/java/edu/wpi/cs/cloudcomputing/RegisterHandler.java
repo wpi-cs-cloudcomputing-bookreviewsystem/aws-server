@@ -37,6 +37,8 @@ public class RegisterHandler implements RequestHandler<Object, String> {
         	
         	String responseContent = userManager.register(registerMessage);
         	if (responseContent.equals(USER_CREATED)) {
+
+
         		responseMsg.setStatus("SUCCESS");
             	responseMsg.setContent(responseContent);
         	}
