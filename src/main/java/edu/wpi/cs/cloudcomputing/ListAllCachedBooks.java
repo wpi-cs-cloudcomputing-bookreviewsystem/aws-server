@@ -16,7 +16,7 @@ public class ListAllCachedBooks implements RequestHandler<Object, String> {
         ResponseMessage responseMsg = new ResponseMessage();       
         BookManager bookManager = new BookManager();
         try {       	
-        	String allbooks = bookManager.getAllCachedBooks();
+        	String allbooks = bookManager.getBook("test1");
         	context.getLogger().log("allbooks: " + allbooks);
         	responseMsg.setStatus("SUCCESS");
         	responseMsg.setContent(allbooks);

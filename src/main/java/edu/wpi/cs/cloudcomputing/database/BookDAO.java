@@ -17,37 +17,10 @@ public class BookDAO {
         databaseUtil = new DatabaseUtil();
     }
 
-
-    public List<Book> getAllBooks() throws Exception {
-        if (databaseUtil.conn == null) {
-            databaseUtil.initDBConnection();
-        }
-        List<Book> allBooks = new ArrayList<>();
-        try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM Book";
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                Book book = generateBookFromResultSet(resultSet);
-                allBooks.add(book);
-            }
-            resultSet.close();
-            statement.close();
-            databaseUtil.conn.close();
-
-            return allBooks;
-
-        } catch (Exception e) {
-            throw new Exception("Failed in getting books: " + e.getMessage());
-        }
-    }
-
     public Book getBook(String bookISBN) throws Exception {
         if (databaseUtil.conn == null) {
             databaseUtil.initDBConnection();
         }
-
         try {
             Book book = null;
 
@@ -77,7 +50,29 @@ public class BookDAO {
         }
     }
 
-    public boolean addBookWithReview(Book book) throws Exception {
+    public boolean updateBook(Book book) throws Exception {
+        if (databaseUtil.conn == null) {
+            databaseUtil.initDBConnection();
+        }
+        Boolean res = false;
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+            String update = "book_title = '" + book.getTitle()
+                    + "', book_author='" + book.getAuthor()
+                    + "', book_description='" + book.getDescription()
+                    + "', book_image_url='" + book.getImageUrl()
+                    + "', book_genre='" + book.getGenre() + "'";
+            String query = "UPDATE Book SET" + update + "WHERE book_isbn='" + book.getISBN() + "';";
+            res = statement.execute(query);
+            return res;
+        } catch (Exception e) {
+            throw new Exception("Failed too insert report: " + e.getMessage());
+        }
+
+
+    }
+
+    public boolean addBook(Book book) throws Exception {
         if (databaseUtil.conn == null) {
             databaseUtil.initDBConnection();
         }
@@ -85,7 +80,6 @@ public class BookDAO {
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = "SELECT * FROM Book WHERE book_isbn = '" + bookISBN + "';";
-
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -94,8 +88,10 @@ public class BookDAO {
                 resultSet.close();
                 return false;
             }
+
             String insertquery = insertBookQuery(book);
-            statement.executeUpdate(insertquery);
+            System.out.println(insertquery);
+            statement.execute(insertquery);
             statement.close();
             databaseUtil.conn.close();
             return true;
@@ -103,10 +99,32 @@ public class BookDAO {
         } catch (Exception e) {
             throw new Exception("Failed too insert book: " + e.getMessage());
         }
-
-
     }
 
+    public List<Book> getAllBooks() throws Exception {
+        if (databaseUtil.conn == null) {
+            databaseUtil.initDBConnection();
+        }
+        List<Book> allBooks = new ArrayList<>();
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+            String query = "SELECT * FROM Book";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                Book book = generateBookFromResultSet(resultSet);
+                allBooks.add(book);
+            }
+            resultSet.close();
+            statement.close();
+            databaseUtil.conn.close();
+
+            return allBooks;
+
+        } catch (Exception e) {
+            throw new Exception("Failed in getting books: " + e.getMessage());
+        }
+    }
 
     private Book generateBookFromResultSet(ResultSet resultSet) throws Exception {
         String title = resultSet.getString("book_title");
@@ -131,16 +149,14 @@ public class BookDAO {
         BookDAO bookDAO = new BookDAO();
         try {
 
-            Book book = new Book("title", "author",
-                    "test1", "description", null, "genre", 4.5f);
+            Book book = new Book("title3", "author",
+                    "test2", "description", null, "genre", 4.5f);
             Review review = null;
             List<Review> reviewList = new LinkedList<>();
             reviewList.add(review);
             book.setReviews(reviewList);
 
-            Book book1 = bookDAO.getBook("test1");
-            System.out.println(book1.getGenre());
-            System.out.println(book1.getScore());
+            Boolean res = bookDAO.addBook(book);
 
         } catch (Exception e) {
             e.printStackTrace();

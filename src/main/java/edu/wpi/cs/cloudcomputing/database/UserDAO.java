@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import edu.wpi.cs.cloudcomputing.model.User;
-import edu.wpi.cs.cloudcomputing.utils.Common;
-import sun.jvmstat.perfdata.monitor.PerfStringVariableMonitor;
 
 public class UserDAO {
 
@@ -92,16 +90,16 @@ public class UserDAO {
         return user;
     }
 
-//    public static void main(String[] args) {
-//        UserDAO userDAO = new UserDAO();
-//        User user1 = new User("USER1", "USER1@EMAIL.COM");
-//        User user2 = new User("USER2", "USER2@EMAIL.COM");
-//        try {
-//            userDAO.saveUser(user2);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void main(String[] args) {
+        UserDAO userDAO = new UserDAO();
+        User user1 = new User("USER1", "USER1@EMAIL.COM");
+        User user2 = new User("USER2", "USER2@EMAIL.COM");
+        try {
+            userDAO.saveUser(user2);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

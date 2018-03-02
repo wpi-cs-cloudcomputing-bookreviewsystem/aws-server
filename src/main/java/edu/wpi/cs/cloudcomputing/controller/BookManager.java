@@ -21,6 +21,13 @@ public class BookManager {
 		return gson.toJson(allBooks, listType);
 
 	}
+
+	public String getBook(String isbn) throws Exception{
+		BookDAO bookDAO = new BookDAO();
+		Book book = bookDAO.getBook(isbn);
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(book);
+	}
 	
 	public String getAllCachedBooks() throws Exception {
 		List<Book> allBooks = createLibrary();

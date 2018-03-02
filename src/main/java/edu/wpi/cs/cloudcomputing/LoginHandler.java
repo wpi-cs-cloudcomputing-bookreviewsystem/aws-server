@@ -9,10 +9,8 @@ import edu.wpi.cs.cloudcomputing.controller.UserManager;
 import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 
 import static edu.wpi.cs.cloudcomputing.utils.Common.LOGGED_IN;
-import static edu.wpi.cs.cloudcomputing.utils.Common.USER_CREATED;
 
 public class LoginHandler implements RequestHandler<Object, String> {
 

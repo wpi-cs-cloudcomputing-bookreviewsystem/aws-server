@@ -27,7 +27,6 @@ public class RatingDAO {
             Statement statement = databaseUtil.conn.createStatement();
 
             String query = "SELECT AVG(rating_score) AS avg_rating FROM Rating WHERE rating_book_id='" + bookISBN + "';";
-            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
 
@@ -120,25 +119,25 @@ public class RatingDAO {
         return columns + values;
     }
 
-    public static void main(String[] args) throws Exception {
-        User u1 = new User("test1", "test1@test.com");
-        User u2 = new User("test2", "test2@test.com");
-        String b1 = "book1";
-        String b2 = "book2";
-        Rating r1 = new Rating(b1, u1, 4.8f);
-        Rating r2 = new Rating(b1, u2, 4.0f);
-        Rating r3 = new Rating(b2, u2, 4.5f);
-        RatingDAO ratingDAO = new RatingDAO();
-        RatingDAO ratingDAO1 = new RatingDAO();
-
-        try {
-            //ratingDAO.addRating(r2);
-            System.out.println(ratingDAO1.getRatingByUserId(u2.getEmail(), b1));
-            //System.out.println(ratingDAO.getAvergeRatingFromBookISBN(b1));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) throws Exception {
+//        User u1 = new User("test1", "test1@test.com");
+//        User u2 = new User("test2", "test2@test.com");
+//        String b1 = "book1";
+//        String b2 = "book2";
+//        Rating r1 = new Rating(b1, u1, 4.8f);
+//        Rating r2 = new Rating(b1, u2, 4.0f);
+//        Rating r3 = new Rating(b2, u2, 4.5f);
+//        RatingDAO ratingDAO = new RatingDAO();
+//        RatingDAO ratingDAO1 = new RatingDAO();
+//
+//        try {
+//            //ratingDAO.addRating(r2);
+//            System.out.println(ratingDAO1.getRatingByUserId(u2.getEmail(), b1));
+//            //System.out.println(ratingDAO.getAvergeRatingFromBookISBN(b1));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }
