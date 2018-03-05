@@ -152,13 +152,13 @@ public class ReviewDAO {
         ReviewDAO r1 = new ReviewDAO();
 
         Review review = new Review();
-        review.setThumbUpNumber(4);
+        review.setThumbUpNumber(10);
         review.setBookISBN("0156031442");
         review.setReviewId();
         User u = new User();
-        u.setEmail("USER1@EMAIL.COM");
+        u.setEmail("TestUser@tester.com");
         review.setReviewer(u);
-        review.setContent("review4");
+        review.setContent("review10");
         try{
         r1.addReview(review);
         } catch (Exception e) {
