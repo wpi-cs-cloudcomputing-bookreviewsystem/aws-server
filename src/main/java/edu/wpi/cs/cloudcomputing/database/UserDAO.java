@@ -17,7 +17,7 @@ public class UserDAO {
     }
 
     public void saveUser(User user) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         try {
@@ -50,7 +50,7 @@ public class UserDAO {
     }
 
     public User getUser(String emailAddress) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
 
@@ -90,16 +90,16 @@ public class UserDAO {
         return user;
     }
 
-    public static void main(String[] args) {
-        UserDAO userDAO = new UserDAO();
-        User user1 = new User("USER1", "USER1@EMAIL.COM");
-        User user2 = new User("USER2", "USER2@EMAIL.COM");
-        try {
-            userDAO.saveUser(user2);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        UserDAO userDAO = new UserDAO();
+////        User user1 = new User("USER1", "USER1@EMAIL.COM");
+////        User user2 = new User("USER2", "USER2@EMAIL.COM");
+//        try {
+//            userDAO.getUser("test1@test.com");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

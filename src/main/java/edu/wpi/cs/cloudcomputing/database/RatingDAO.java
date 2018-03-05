@@ -19,7 +19,7 @@ public class RatingDAO {
     }
 
     public float getAvergeRatingFromBookISBN(String bookISBN) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         Float res = 0.0f;
@@ -27,6 +27,7 @@ public class RatingDAO {
             Statement statement = databaseUtil.conn.createStatement();
 
             String query = "SELECT AVG(rating_score) AS avg_rating FROM Rating WHERE rating_book_id='" + bookISBN + "';";
+            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
 
@@ -44,11 +45,10 @@ public class RatingDAO {
         }
     }
 
-    public void addRating(Rating rating) throws Exception {
-        if (databaseUtil.conn == null) {
+    public boolean addRating(Rating rating) throws Exception {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String queryIfExist = "SELECT * FROM Rating WHERE rating_user_id='" + rating.getUser().getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
@@ -57,12 +57,15 @@ public class RatingDAO {
             if (resultSet.next()) {
                 String updateQuery = "UPDATE Rating SET rating_score=" + rating.getScore()
                         + "WHERE rating_user_id='" + rating.getUser().getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
-                statement.executeUpdate(updateQuery);
+                statement.execute(updateQuery);
                 statement.close();
+                return true;
+
             } else {
                 String query = insertRatingQuery(rating);
-                statement.executeUpdate(query);
+                statement.execute(query);
                 statement.close();
+                return true;
             }
         } catch (Exception e) {
             throw new Exception("Failed in insert rating: " + e.getMessage());
@@ -74,7 +77,7 @@ public class RatingDAO {
     }
 
     public Float getRatingByUserId(String useremail, String bookISBN) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         Float rating = null;
@@ -82,7 +85,6 @@ public class RatingDAO {
             Statement statement = databaseUtil.conn.createStatement();
 
             String query = "SELECT * FROM Rating WHERE rating_user_id='" + useremail + "' and rating_book_id='" + bookISBN + "';";
-            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -91,7 +93,6 @@ public class RatingDAO {
             resultSet.close();
             statement.close();
             databaseUtil.conn.close();
-
             return rating;
 
         } catch (Exception e) {

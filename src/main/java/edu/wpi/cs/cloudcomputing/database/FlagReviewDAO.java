@@ -17,7 +17,7 @@ public class FlagReviewDAO {
     }
 
     public void addFlagReview (Review review, User reporter) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         try {
@@ -33,7 +33,7 @@ public class FlagReviewDAO {
     }
 
     public boolean removeFlageReview (Review review) throws Exception{
-        if(databaseUtil.conn == null)
+        if(databaseUtil.conn == null || databaseUtil.conn.isClosed())
         {
             databaseUtil.initDBConnection();
         }

@@ -26,28 +26,29 @@ public class ReviewDAO {
     }
 
     public boolean addReview(Review review) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
+
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = insertReviewQuery(review);
-            res = statement.execute(query);
-            return res;
+            System.out.println(query);
+            statement.execute(query);
+            return true;
         } catch (Exception e) {
             throw new Exception("Failed too insert book: " + e.getMessage());
         }
     }
 
     public List<Review> getAllReviewByBookISBN(String bookISBN) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         List<Review> reviewList = new ArrayList<>();
         try {
             Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM review WHERE review_book_id='" + bookISBN +"';";
+            String query = "SELECT * FROM Review WHERE review_book_id='" + bookISBN +"';";
             ResultSet resultSet = statement.executeQuery(query);
             while ((resultSet.next())) {
                 Review review = generateBookFromResultSet(resultSet);
@@ -65,7 +66,7 @@ public class ReviewDAO {
     }
 
     public List<Review> getAllReviewByUserId(String userEmail) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         List<Review> reviewList = new ArrayList<>();
@@ -87,19 +88,38 @@ public class ReviewDAO {
     }
 
     public boolean deleteReview(String reviewId) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String deleteQuery ="DELETE FROM Review WHERE review_id='" + reviewId + "';";
-            res = statement.execute(deleteQuery);
-            return res;
+            statement.execute(deleteQuery);
+            statement.close();
+            databaseUtil.conn.close();
+            return true;
         } catch (Exception e) {
             throw new Exception("Failed to delete book: " + e.getMessage());
         }
+    }
 
+    public boolean thumbUpReview(Review review) throws Exception{
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+            databaseUtil.initDBConnection();
+        }
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+
+            String updateQuery = "UPDATE Review SET review_thumb_up_num=" + review.getThumbUpNumber()
+                    + " WHERE review_id='" + review.getReviewId() + "' ;";
+            //System.out.println(updateQuery);
+            statement.execute(updateQuery);
+            statement.close();
+            databaseUtil.conn.close();
+            return true;
+        } catch (Exception e) {
+            throw new Exception("Failed to update thumbUpNumber: " + e.getMessage());
+        }
 
     }
 
@@ -117,7 +137,9 @@ public class ReviewDAO {
 
         String bookISBN = resultSet.getString("review_book_id");
         UserDAO userDAO = new UserDAO();
+        System.out.println(resultSet.getString("review_user_id"));
         User user = userDAO.getUser(resultSet.getString("review_user_id"));
+
         Integer thumb_up_num = resultSet.getInt("review_thumb_up_num");
         String content = resultSet.getString("review_content");
         String reviewId = resultSet.getString("review_id");
@@ -128,18 +150,17 @@ public class ReviewDAO {
 
     public static void main(String[] args) {
         ReviewDAO r1 = new ReviewDAO();
-//        Review r= new Review();
-//        User u = new User();
-//        r.setBookISBN("test2");
-//        r.setContent("content");
-//        r.setReviewId();
-//        r.setReviewer(u);
-//
-//        r.setThumbUpNumber(5);
 
-        try {
-            r1.deleteReview("161e1edc54b");
-
+        Review review = new Review();
+        review.setThumbUpNumber(4);
+        review.setBookISBN("0156031442");
+        review.setReviewId();
+        User u = new User();
+        u.setEmail("USER1@EMAIL.COM");
+        review.setReviewer(u);
+        review.setContent("review4");
+        try{
+        r1.addReview(review);
         } catch (Exception e) {
             e.printStackTrace();
         }

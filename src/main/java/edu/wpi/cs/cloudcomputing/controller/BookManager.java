@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import edu.wpi.cs.cloudcomputing.database.BookDAO;
 import edu.wpi.cs.cloudcomputing.model.Book;
+import edu.wpi.cs.cloudcomputing.model.Rating;
 
 public class BookManager {
 	public String getAllBooks() throws Exception {
@@ -21,12 +22,14 @@ public class BookManager {
 		return gson.toJson(allBooks, listType);
 	}
 
-	public String getBook(String isbn) throws Exception{
+	public Book getBook(String isbn) throws Exception{
 		BookDAO bookDAO = new BookDAO();
 		Book book = bookDAO.getBook(isbn);
-		Gson gson = new GsonBuilder().create();
-		return gson.toJson(book);
+		//Gson gson = new GsonBuilder().create();
+		//return gson.toJson(book);
+		return book;
 	}
+
 	
 //	public String getAllCachedBooks() throws Exception {
 //		List<Book> allBooks = createLibrary();

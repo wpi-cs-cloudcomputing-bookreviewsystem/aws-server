@@ -19,7 +19,7 @@ public class UserNetworkDAO {
     }
 
     public void addFriend(User u1, User u2) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
 
@@ -45,7 +45,7 @@ public class UserNetworkDAO {
     }
 
     public List<User> getFriendsList(User user) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
 

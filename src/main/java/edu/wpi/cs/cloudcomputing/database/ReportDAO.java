@@ -16,22 +16,21 @@ public class ReportDAO {
     }
 
     public boolean addReport(Report report) throws Exception{
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = "UPDATE Report SET report_process = 1 WHERE report_id='" + report.getReportId() +"';";
-            res = statement.execute(query);
-            return res;
+            statement.execute(query);
+            return true;
         } catch (Exception e) {
             throw new Exception("Failed too insert report: " + e.getMessage());
         }
     }
 
     public boolean updateReport(Report report) throws Exception{
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         Boolean res = false;

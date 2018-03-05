@@ -3,11 +3,9 @@ package edu.wpi.cs.cloudcomputing.database;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import edu.wpi.cs.cloudcomputing.model.Book;
-import edu.wpi.cs.cloudcomputing.model.Review;
 
 public class BookDAO {
 
@@ -18,7 +16,7 @@ public class BookDAO {
     }
 
     public Book getBook(String bookISBN) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         try {
@@ -51,7 +49,7 @@ public class BookDAO {
     }
 
     public boolean updateBook(Book book) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         Boolean res = false;
@@ -73,7 +71,7 @@ public class BookDAO {
     }
 
     public boolean addBook(Book book) throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         String bookISBN = book.getISBN();
@@ -102,7 +100,7 @@ public class BookDAO {
     }
 
     public List<Book> getAllBooks() throws Exception {
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         List<Book> allBooks = new ArrayList<>();
@@ -145,22 +143,17 @@ public class BookDAO {
         return columns + values;
     }
 
-//    public static void main(String[] args) {
-//        BookDAO bookDAO = new BookDAO();
-//        try {
-//
-//            Book demoBook = new Book();
-//        demoBook.setTitle("Animals in Translation");
-//        demoBook.setAuthor("Temple Grandin, Catherine Johnson");
-//        demoBook.setDescription("In this exciting new e edition, Temple Grandin returns to her groundbreaking work, Animals in Translation, to address the last ten years of developments in behavioral research, animal welfare, and farming regulations. Originally published in 2005, Animals in Translation received unanimous critical praise and was a bestseller in both hardcover and paperback, and Grandin’s Q&A updates this classic text with the most current scientific research.");
-//        demoBook.setGenre("Animal");
-//        demoBook.setISBN("0156031442");
-//        demoBook.setScore((float) 4.5);
-//        demoBook.setImageUrl("http://www.templegrandin.com/_images/_books/AnimalsAutismTemple.png");
-//            Boolean res = bookDAO.addBook(demoBook);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void main(String[] args) throws Exception {
+        BookDAO bookDAO = new BookDAO();
+        Book book = new Book();
+        book.setISBN("0312510780");
+        book.setScore(0f);
+        book.setAuthor("Roger Priddy");
+String s = "Your little one will soon learn some essential first words and pictures with this bright board book. There are 100 color photographs to look at and talk about, and 100 simple first words to read and learn, too. The pages are made from tough board for hours of fun reading, and the cover is softly padded for little hands to hold.";
+        book.setDescription(s);
+        book.setTitle("First 100 Words");
+        book.setGenre("Board book");
+        book.setImageUrl("https://images-na.ssl-images-amazon.com/images/I/51AvKQWCl%2BL._SX405_BO1,204,203,200_.jpg");
+        bookDAO.addBook(book);
+    }
 }

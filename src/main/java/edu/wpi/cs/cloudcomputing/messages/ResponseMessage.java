@@ -1,6 +1,7 @@
 package edu.wpi.cs.cloudcomputing.messages;
 
-public class ResponseMessage {
+
+public class ResponseMessage{
 	private String status;
 	private String content;
 	

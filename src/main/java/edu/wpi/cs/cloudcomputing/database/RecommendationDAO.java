@@ -20,7 +20,7 @@ public class RecommendationDAO {
     }
 
     public boolean addRecommendation(Recommendation recommendation) throws Exception{
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         Boolean res = false;
@@ -35,7 +35,7 @@ public class RecommendationDAO {
     }
 
     public List<String> getRecommendationByUser(String useremail) throws Exception{
-        if (databaseUtil.conn == null) {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         List<String> bookISBNList = new ArrayList<>();

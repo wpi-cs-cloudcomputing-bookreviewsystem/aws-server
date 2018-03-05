@@ -1,23 +1,23 @@
 package edu.wpi.cs.cloudcomputing;
 
-import java.io.IOException;
-
+import com.amazonaws.services.lambda.runtime.Context;
+import edu.wpi.cs.cloudcomputing.model.Rating;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.amazonaws.services.lambda.runtime.Context;
+import java.io.IOException;
 
 /**
- * A simple test harness for locally invoking your Lambda function handler.
+ * Created by tonggezhu on 3/2/18.
  */
-public class GetBookDetailTest {
-
+public class AddRatingTest {
     private static Object input;
 
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-        input = "{\"isbn\": \"0156031442\"}";
+        input = "{\"isbn\": \"test1\", \"email\": \"test2@test.com\", \"score\": 9}";
+        System.out.println(input);
     }
 
     private Context createContext() {
@@ -31,7 +31,7 @@ public class GetBookDetailTest {
 
     @Test
     public void testListAllCachedBooks() {
-        GetBookDetail handler = new GetBookDetail();
+        RatingBook handler = new RatingBook();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
