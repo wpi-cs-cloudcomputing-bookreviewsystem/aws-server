@@ -5,10 +5,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
-import edu.wpi.cs.cloudcomputing.messages.FriendMessage;
+import edu.wpi.cs.cloudcomputing.messages.PMMessage;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
-import sun.text.normalizer.CharTrie;
 
 /**
  * Created by tonggezhu on 3/8/18.
@@ -21,12 +20,12 @@ public class RejectAddFriendRequest implements RequestHandler<Object, String> {
 
         UserManager userManager = new UserManager();
         MessageManager messageManager = new MessageManager();
-        FriendMessage message = new FriendMessage();
+        PMMessage message = new PMMessage();
         ResponseMessage responseMsg = new ResponseMessage();
         Gson gson = new Gson();
         try {
 
-            message = gson.fromJson(input.toString(), FriendMessage.class);
+            message = gson.fromJson(input.toString(), PMMessage.class);
             if (message == null || message.getFromEmail() == null
                     || message.getToEmail() == null ){
                 throw new Exception();}

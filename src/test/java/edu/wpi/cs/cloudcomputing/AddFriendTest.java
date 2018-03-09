@@ -56,5 +56,4 @@ public class AddFriendTest {
 //        Assert.assertEquals("Hello from Lambda!", output);
     }
 
-
 }

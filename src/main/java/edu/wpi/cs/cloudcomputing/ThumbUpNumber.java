@@ -22,10 +22,8 @@ public class ThumbUpNumber implements RequestHandler<Object, String> {
         Gson gson = new GsonBuilder().create();
         ResponseMessage responseMsg = new ResponseMessage();
         ReviewManager reviewManager = new ReviewManager();
-        ThumbUpReviewMessage message = new ThumbUpReviewMessage();
+        ThumbUpReviewMessage message = null;
         try {
-//            JsonReader reader = new JsonReader(new StringReader(input.toString()));
-//            reader.setLenient(true);
             message = gson.fromJson(input.toString(), ThumbUpReviewMessage.class);
             if (message == null || message.getReviewId()== null
                     || message.getNum() == null) {

@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
+import edu.wpi.cs.cloudcomputing.messages.PMMessage;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.ThumbUpReviewMessage;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
@@ -22,13 +23,13 @@ public class SentPrivateMessage implements RequestHandler<Object, String> {
         Gson gson = new GsonBuilder().create();
         ResponseMessage responseMsg = new ResponseMessage();
         MessageManager messageManager = new MessageManager();
-        PrivateMessage message = new PrivateMessage();
+        PMMessage message = null;
         try {
-            JsonReader reader = new JsonReader(new StringReader(input.toString()));
-            reader.setLenient(true);
-            message = gson.fromJson(input.toString(), PrivateMessage.class);
-            if (message == null || message.getReceiverEmail()== null
-                    || message.getSenderEmail() == null || message.getTitle() == null ) {
+//            JsonReader reader = new JsonReader(new StringReader(input.toString()));
+//            reader.setLenient(true);
+            message = gson.fromJson(input.toString(), PMMessage.class);
+            if (message == null || message.getFromEmail()== null
+                    || message.getToEmail() == null || message.getTitle() == null ) {
                 throw new Exception();}
         }catch (Exception ex) {
             responseMsg.setStatus("FAILURE in translate input");
@@ -37,7 +38,7 @@ public class SentPrivateMessage implements RequestHandler<Object, String> {
         }
 
         try {
-            Boolean res = messageManager.addMessage(message.getSenderEmail(), message.getReceiverEmail(), message.getTitle(), message.getContent(), message.getType());
+            Boolean res = messageManager.addMessage(message.getFromEmail(), message.getToEmail(), message.getTitle(), message.getContent(), message.getType());
             responseMsg.setStatus("SUCCESS");
             responseMsg.setContent(res.toString());
         }

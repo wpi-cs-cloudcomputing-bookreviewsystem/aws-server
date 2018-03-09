@@ -19,8 +19,8 @@ public class SentPrivateMessageTest {
     public static void createInput() throws IOException {
 
         privateMessage = new LinkedHashMap<>();
-        privateMessage.put("senderEmail","TEST8@EMAIL.COM");
-        privateMessage.put("receiverEmail","ha.ha@ha");
+        privateMessage.put("fromEmail","TEST8@EMAIL.COM");
+        privateMessage.put("toEmail","ha.ha@ha");
         privateMessage.put("title", "\"Hello lalala\"");
         privateMessage.put("content", "\"test test test\"");
         privateMessage.put("type", Common.MESSAGE);
