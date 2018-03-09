@@ -1,32 +1,25 @@
 package edu.wpi.cs.cloudcomputing;
 
-import java.io.IOException;
-
+import com.amazonaws.services.lambda.runtime.Context;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.Gson;
+import java.io.IOException;
 
-import edu.wpi.cs.cloudcomputing.model.User;
+import static org.junit.Assert.*;
 
 /**
- * A simple test harness for locally invoking your Lambda function handler.
+ * Created by tonggezhu on 3/4/18.
  */
-public class MyProfileHandlerTest {
-
+public class ThumbUpNumberTest {
     private static Object input;
 
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-    	User userInput = new User();
-    	userInput.setEmail("TestUser02244@tester.com");
-    	userInput.setUsername("TestUser0224");
-    	Gson gson = new Gson();
-    	
-        input = gson.toJson(userInput);
+        input = "{\"num\": 4, \"reviewId\": \"161ee0351a2\"}";
+        System.out.println(input);
     }
 
     private Context createContext() {
@@ -38,14 +31,19 @@ public class MyProfileHandlerTest {
         return ctx;
     }
 
+
+
     @Test
-    public void testMyProfileHandler() {
-        MyProfileHandler handler = new MyProfileHandler();
+    public void handleRequest() throws Exception {
+
+        ThumbUpNumber handler = new ThumbUpNumber();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
-        System.out.println(output);
+        Assert.assertEquals("{\"status\":\"SUCCESS\",\"content\":\"true\"}", output);
         // TODO: validate output here if needed.
 //        Assert.assertEquals("Hello from Lambda!", output);
+
     }
+
 }
