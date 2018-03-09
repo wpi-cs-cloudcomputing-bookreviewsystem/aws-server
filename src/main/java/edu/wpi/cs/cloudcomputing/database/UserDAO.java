@@ -59,6 +59,7 @@ public class UserDAO {
 
             Statement statement = databaseUtil.conn.createStatement();
             String query = "SELECT * FROM User WHERE user_email='" + emailAddress + "';";
+            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -83,12 +84,14 @@ public class UserDAO {
         }
     }
 
+
     private User generateUserFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setUsername(resultSet.getString("user_name"));
         user.setEmail(resultSet.getString("user_email"));
         return user;
     }
+
 
 //    public static void main(String[] args) {
 //        UserDAO userDAO = new UserDAO();

@@ -15,7 +15,7 @@ public class ReportDAO {
         this.databaseUtil = new DatabaseUtil();
     }
 
-    public boolean addReport(Report report) throws Exception{
+    public void addReport(Report report) throws Exception{
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
@@ -23,22 +23,21 @@ public class ReportDAO {
             Statement statement = databaseUtil.conn.createStatement();
             String query = "UPDATE Report SET report_process = 1 WHERE report_id='" + report.getReportId() +"';";
             statement.execute(query);
-            return true;
         } catch (Exception e) {
             throw new Exception("Failed too insert report: " + e.getMessage());
         }
     }
 
-    public boolean updateReport(Report report) throws Exception{
+    public void updateReport(Report report) throws Exception{
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
+
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = insertReportQuery(report);
-            res = statement.execute(query);
-            return res;
+            statement.execute(query);
+
         } catch (Exception e) {
             throw new Exception("Failed too insert report: " + e.getMessage());
         }

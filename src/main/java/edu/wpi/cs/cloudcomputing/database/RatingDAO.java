@@ -30,7 +30,6 @@ public class RatingDAO {
             System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
-
             while (resultSet.next()) {
                 res = resultSet.getFloat("avg_rating");
             }

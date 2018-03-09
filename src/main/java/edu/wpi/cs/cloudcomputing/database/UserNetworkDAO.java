@@ -4,7 +4,6 @@ import edu.wpi.cs.cloudcomputing.model.User;
 
 import java.rmi.server.UID;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
@@ -18,18 +17,18 @@ public class UserNetworkDAO {
         databaseUtil = new DatabaseUtil();
     }
 
-    public void addFriend(User u1, User u2) throws Exception {
+    public void addFriend(String fromEmail, String toEmail) throws Exception {
+
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
 
         try {
-
             Statement statement = databaseUtil.conn.createStatement();
             String userNetworkId = new UID().toString().split(":")[1];
-            String columns = "INSERT INTO User_Network (userNetwork_id, userNetwork_user1_id, userNetwork_user2_id)";
-            String values1 = "values ('" + userNetworkId + "','" + u1.getEmail() + "','" + u2.getEmail() + "');";
-            String values2 = "values ('" + userNetworkId + "','" + u2.getEmail() + "','" + u1.getEmail() + "');";
+            String columns = "INSERT INTO User_Network (userNetwork_id, userNetwork_user1_id, userNetwork_user2_id, isPending)";
+            String values1 = "values ('" + userNetworkId + "','" + fromEmail + "','" + toEmail + "'," + 0 + ");";
+            String values2 = "values ('" + userNetworkId + "','" + toEmail + "','" + fromEmail + "'," + 1 + ");";
             String query1 = columns + values1;
             String query2 = columns + values2;
             statement.executeUpdate(query1);
@@ -40,6 +39,76 @@ public class UserNetworkDAO {
 
         } catch (Exception e) {
             throw new Exception("Failed in insert UserNetwork " + e.getMessage());
+        }
+
+    }
+
+    public void acceptAddFriend(String fromEmail, String toEmail) throws Exception {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+            databaseUtil.initDBConnection();
+        }
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+            String userNetworkId = new UID().toString().split(":")[1];
+            String query = "UPDATE User_Network SET isPending = 0 WHERE userNetwork_user1_id ='" + fromEmail + "'AND userNetwork_user2_id='" + toEmail + "';";
+            System.out.println(query);
+            statement.executeUpdate(query);
+            statement.close();
+            databaseUtil.conn.close();
+
+        } catch (Exception e) {
+            throw new Exception("Failed in update UserNetwork " + e.getMessage());
+        }
+
+    }
+
+    public void rejectAddFriend(String fromEmail, String toEmail) throws Exception {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+            databaseUtil.initDBConnection();
+        }
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+            String query1 = "DELETE FROM User_Network WHERE userNetwork_user1_id ='" + fromEmail + "' AND userNetwork_user2_id='" + toEmail + "';";
+            String query2 = "DELETE FROM User_Network WHERE userNetwork_user1_id ='" + toEmail + "' AND userNetwork_user2_id='" + fromEmail + "';";
+            System.out.println(query1);
+            statement.executeUpdate(query1);
+            statement.executeUpdate(query2);
+            statement.close();
+            databaseUtil.conn.close();
+
+        } catch (Exception e) {
+            throw new Exception("Failed in delete UserNetwork " + e.getMessage());
+        }
+    }
+
+    public String checkFriendship(String myEmail, String requestEmail) throws Exception {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+            databaseUtil.initDBConnection();
+        }
+        StringBuilder sb = new StringBuilder();
+        ResultSet resultSet = null;
+        try {
+            Statement statement = databaseUtil.conn.createStatement();
+            String query = "SELECT isPending FROM User_Network WHERE (userNetwork_user1_id='" + myEmail + "' AND userNetwork_user2_id='" + requestEmail + "') OR (userNetwork_user1_id='" + requestEmail + "'AND userNetwork_user2_id='" + myEmail + "');";
+            System.out.println(query);
+
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                sb.append(resultSet.getInt("isPending"));
+            }
+
+            resultSet.close();
+            statement.close();
+            databaseUtil.conn.close();
+            if (sb.toString().equals("01")) {
+                return "pending";
+            } else if (sb.toString().equals("00")) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } catch (Exception e) {
+            throw new Exception("Failed in update UserNetwork " + e.getMessage());
         }
 
     }
@@ -64,7 +133,7 @@ public class UserNetworkDAO {
             statement.close();
             databaseUtil.conn.close();
             List<User> setList = new ArrayList<>();
-            for (String email: usersemailList) {
+            for (String email : usersemailList) {
                 setList.add(generateUserFromUseremail(email));
             }
             return setList;
@@ -87,9 +156,11 @@ public class UserNetworkDAO {
     }
 
 //    public static void main(String[] args) throws Exception {
-//        User user1 = new User("USER1", "USER1@EMAIL.COM");
-//        User user2 = new User("USER2", "USER2@EMAIL.COM");
+//        String fromEmail = "USER4@EMAIL.COM";
+//        String toEmail = "ha@ha.ha";
 //        UserNetworkDAO userNetworkDAO = new UserNetworkDAO();
-//        System.out.println(userNetworkDAO.getFriendsList(user1).size());
+//        userNetworkDAO.rejectAddFriend(fromEmail, toEmail);
+//        System.out.println(userNetworkDAO.checkFriendship(toEmail, fromEmail));
+//        //System.out.println(userNetworkDAO.getFriendsList(user1).size());
 //    }
 }

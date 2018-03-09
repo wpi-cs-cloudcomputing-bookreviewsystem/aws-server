@@ -16,7 +16,7 @@ public class FlagReviewDAO {
         this.databaseUtil = new DatabaseUtil();
     }
 
-    public void addFlagReview (Review review, User reporter) throws Exception {
+    public void addFlagReview(Review review, User reporter) throws Exception {
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
@@ -26,26 +26,24 @@ public class FlagReviewDAO {
             statement.executeUpdate(insertQuery);
             statement.close();
             databaseUtil.conn.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception("Failed in inserting flag_reviews: " + e.getMessage());
         }
-
     }
 
-    public boolean removeFlageReview (Review review) throws Exception{
-        if(databaseUtil.conn == null || databaseUtil.conn.isClosed())
-        {
+    public void removeFlageReview(Review review) throws Exception {
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
+
         try {
             Statement statement = databaseUtil.conn.createStatement();
-            String deleteQuery ="DELETE FROM Flag_review WHERE flag_review_review_id='" + review.getReviewId() + "';";
-            res = statement.execute(deleteQuery);
+            String deleteQuery = "DELETE FROM Flag_review WHERE flag_review_review_id='" + review.getReviewId() + "';";
+            statement.execute(deleteQuery);
             statement.close();
             databaseUtil.conn.close();
-            return  res;
-        }catch (Exception e){
+
+        } catch (Exception e) {
             throw new Exception("Failed in inserting flag_reviews: " + e.getMessage());
         }
     }
@@ -53,7 +51,7 @@ public class FlagReviewDAO {
     private String insertflagReviewQuery(Review review, User user) {
         String flagReviewId = new UID().toString().split(":")[1];
         String columns = "INSERT INTO Flag_Review (flag_review_id, flag_review_from_user_id,flag_review_review_id, flag_review_datetime)";
-        String values = "values ('" + flagReviewId + "','" + user.getEmail() + "','" + review.getReviewId() + "','" + databaseUtil.currentDate()  + "');";
+        String values = "values ('" + flagReviewId + "','" + user.getEmail() + "','" + review.getReviewId() + "','" + databaseUtil.currentDate() + "');";
         return columns + values;
     }
 

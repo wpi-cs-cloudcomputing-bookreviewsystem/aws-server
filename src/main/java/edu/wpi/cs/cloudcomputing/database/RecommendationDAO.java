@@ -19,16 +19,15 @@ public class RecommendationDAO {
         databaseUtil = new DatabaseUtil();
     }
 
-    public boolean addRecommendation(Recommendation recommendation) throws Exception{
+    public void addRecommendation(Recommendation recommendation) throws Exception{
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
-        Boolean res = false;
+
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = insertRecommendationQuery(recommendation);
-            res = statement.execute(query);
-            return res;
+            statement.execute(query);
         } catch (Exception e) {
             throw new Exception("Failed too insert recommendation: " + e.getMessage());
         }

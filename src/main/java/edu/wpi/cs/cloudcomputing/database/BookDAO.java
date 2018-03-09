@@ -1,9 +1,10 @@
 package edu.wpi.cs.cloudcomputing.database;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.wpi.cs.cloudcomputing.model.Book;
 
@@ -99,29 +100,89 @@ public class BookDAO {
         }
     }
 
-    public List<Book> getAllBooks() throws Exception {
+    public List<Book> getAllBooks(String words) throws Exception {
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
         List<Book> allBooks = new ArrayList<>();
-        try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM Book";
-            ResultSet resultSet = statement.executeQuery(query);
+        if (words == null || words == "") {
+            try {
+                Statement statement = databaseUtil.conn.createStatement();
+                String query = "SELECT * FROM Book";
+                ResultSet resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
-                Book book = generateBookFromResultSet(resultSet);
-                allBooks.add(book);
+                while (resultSet.next()) {
+                    Book book = generateBookFromResultSet(resultSet);
+                    allBooks.add(book);
+                }
+                resultSet.close();
+                statement.close();
+                databaseUtil.conn.close();
+                return allBooks;
+
+            } catch (Exception e) {
+                throw new Exception("Failed in getting books: " + e.getMessage());
             }
-            resultSet.close();
+        } else {
+            allBooks = searchBook(words, databaseUtil);
+            databaseUtil.conn.close();
+            return allBooks;
+        }
+    }
+
+
+    private List<Book> searchBook(String words, DatabaseUtil util) throws Exception {
+        String[] wordsSet = words.split(" ");
+        Set<ResultSet> res = new HashSet<>();
+        String pattern = "[0-9]{10}";
+
+        try {
+            Statement statement = util.conn.createStatement();
+            for (String word : wordsSet) {
+                ResultSet resultSet = null;
+                if (word.matches(pattern)) {
+                    String query = "SELECT * FROM Book WHERE book_isbn='" + word + "';";
+                    resultSet = statement.executeQuery(query);
+                    while (resultSet.next()) {
+                        res.add(resultSet);
+                    }
+                    resultSet.close();
+                } else {
+                    String query1 = "SELECT * FROM Book WHERE book_title like '%" + word + "%';"
+                            + "SELECT * FROM Book WHERE book_author like '%" + word + "%';";
+                    System.out.println(query1);
+                    CallableStatement cstmt = util.conn.prepareCall(query1);
+                    boolean hasMoreResultSets = cstmt.execute();
+
+                    while (hasMoreResultSets) {
+                        ResultSet resultSet1 = cstmt.getResultSet();
+                        while (resultSet != null && resultSet.next()) {
+                            res.add(resultSet);
+                        }
+                        resultSet.close();
+                    }
+                }
+            }
+
             statement.close();
             databaseUtil.conn.close();
-
-            return allBooks;
-
-        } catch (Exception e) {
-            throw new Exception("Failed in getting books: " + e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        List<Book> bookList = new ArrayList<>();
+
+        try {
+            for (ResultSet resultSet : res) {
+                Book book = generateBookFromResultSet(resultSet);
+                bookList.add(book);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookList;
+
     }
 
     private Book generateBookFromResultSet(ResultSet resultSet) throws Exception {
@@ -145,15 +206,17 @@ public class BookDAO {
 
     public static void main(String[] args) throws Exception {
         BookDAO bookDAO = new BookDAO();
-        Book book = new Book();
-        book.setISBN("0312510780");
-        book.setScore(0f);
-        book.setAuthor("Roger Priddy");
-String s = "Your little one will soon learn some essential first words and pictures with this bright board book. There are 100 color photographs to look at and talk about, and 100 simple first words to read and learn, too. The pages are made from tough board for hours of fun reading, and the cover is softly padded for little hands to hold.";
-        book.setDescription(s);
-        book.setTitle("First 100 Words");
-        book.setGenre("Board book");
-        book.setImageUrl("https://images-na.ssl-images-amazon.com/images/I/51AvKQWCl%2BL._SX405_BO1,204,203,200_.jpg");
-        bookDAO.addBook(book);
+//        Book book = new Book();
+//        book.setISBN("0312510780");
+//        book.setScore(0f);
+//        book.setAuthor("Roger Priddy");
+//        String s = "Your little one will soon learn some essential first words and pictures with this bright board book. There are 100 color photographs to look at and talk about, and 100 simple first words to read and learn, too. The pages are made from tough board for hours of fun reading, and the cover is softly padded for little hands to hold.";
+//        book.setDescription(s);
+//        book.setTitle("First 100 Words");
+//        book.setGenre("Board book");
+//        book.setImageUrl("https://images-na.ssl-images-amazon.com/images/I/51AvKQWCl%2BL._SX405_BO1,204,203,200_.jpg");
+//        bookDAO.addBook(book);
+        System.out.println(bookDAO.getAllBooks("flower Priddy").size());
+
     }
 }

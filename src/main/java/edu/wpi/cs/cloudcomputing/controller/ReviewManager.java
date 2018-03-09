@@ -1,8 +1,6 @@
 package edu.wpi.cs.cloudcomputing.controller;
 
-import edu.wpi.cs.cloudcomputing.database.BookDAO;
 import edu.wpi.cs.cloudcomputing.database.ReviewDAO;
-import edu.wpi.cs.cloudcomputing.model.Book;
 import edu.wpi.cs.cloudcomputing.model.Review;
 import edu.wpi.cs.cloudcomputing.model.User;
 
