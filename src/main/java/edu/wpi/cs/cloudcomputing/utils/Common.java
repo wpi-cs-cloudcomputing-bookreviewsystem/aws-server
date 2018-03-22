@@ -1,10 +1,10 @@
 package edu.wpi.cs.cloudcomputing.utils;
 
 public class Common {
-    public static final String access_key = "";
-    public static final String secret_key = "";
-    public static final String cognito_pool_id = "";
-    public static final String cognito_client_id = "";
+    public static final String access_key = "AKIAIZTQABAG2NXFXLXQ";
+    public static final String secret_key = "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";
+    public static final String cognito_pool_id = "us-east-1_0RyMdDKts";
+    public static final String cognito_client_id = "m8rrod98dvdpvue0r8uhl8vo0";
 
     public final static String NOT_LOGGED_IN = "NOT LOGGED IN";
     public final static String LOGGED_IN = "LOGGED IN";

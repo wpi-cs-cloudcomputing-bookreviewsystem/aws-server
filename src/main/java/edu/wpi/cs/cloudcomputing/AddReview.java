@@ -36,7 +36,7 @@ public class AddReview implements RequestHandler<Object, String> {
                     || addReviewMessage.getContent() == null) {
                 throw new Exception();}
         }catch (Exception ex) {
-            responseMsg.setStatus("FAILURE in tran");
+            responseMsg.setStatus("FAILURE in trans");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);
         }

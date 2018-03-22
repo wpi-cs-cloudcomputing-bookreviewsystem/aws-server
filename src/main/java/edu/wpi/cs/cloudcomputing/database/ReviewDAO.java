@@ -148,22 +148,22 @@ public class ReviewDAO {
 
     }
 
-    public static void main(String[] args) {
-        ReviewDAO r1 = new ReviewDAO();
-
-        Review review = new Review();
-        review.setThumbUpNumber(10);
-        review.setBookISBN("0156031442");
-        review.setReviewId();
-        User u = new User();
-        u.setEmail("TestUser@tester.com");
-        review.setReviewer(u);
-        review.setContent("review10");
-        try{
-        r1.addReview(review);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        ReviewDAO r1 = new ReviewDAO();
+//
+//        Review review = new Review();
+//        review.setThumbUpNumber(10);
+//        review.setBookISBN("0156031442");
+//        review.setReviewId();
+//        User u = new User();
+//        u.setEmail("TestUser@tester.com");
+//        review.setReviewer(u);
+//        review.setContent("review10");
+//        try{
+//        r1.addReview(review);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

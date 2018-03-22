@@ -20,7 +20,7 @@ public class ReadPrivateMessageTest {
     public static void createInput() throws IOException {
 
         request = new LinkedHashMap();
-        request.put("pmId","162077b7908");
+        request.put("pmId","1621167c4cb");
 
     }
 

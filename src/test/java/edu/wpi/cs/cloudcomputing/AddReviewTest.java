@@ -17,7 +17,7 @@ public class AddReviewTest {
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-        input = "{\"isbn\"=\"0156031442\", \"email\"=\"ha@ha.ha\", \"content\"=\"clondcom :   puting3\"}";
+        input = "{\"isbn\"=\"0156031442\", \"email\"=\"ha@ha.ha\", \"content\"=\"clondcomputing\"}";
 //        mao = new LinkedHashMap();
 //        mao.put("isbn","test");
 //        mao.put("email","test@email.com");

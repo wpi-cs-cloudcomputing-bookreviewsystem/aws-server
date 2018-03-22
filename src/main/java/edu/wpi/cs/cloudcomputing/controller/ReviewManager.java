@@ -4,6 +4,7 @@ import edu.wpi.cs.cloudcomputing.database.ReviewDAO;
 import edu.wpi.cs.cloudcomputing.model.Review;
 import edu.wpi.cs.cloudcomputing.model.User;
 
+import java.rmi.server.UID;
 import java.util.List;
 
 public class ReviewManager {
@@ -18,7 +19,8 @@ public class ReviewManager {
     public boolean AddReview(String userEmail, String ISBN, String content) throws Exception{
         reviewDAO = new ReviewDAO();
         Review review = new Review();
-        review.setReviewId();
+        String reviewId =System.currentTimeMillis()%100000000+"";
+        review.setReviewId(reviewId);
         review.setThumbUpNumber(0);
         review.setContent(content);
         review.setBookISBN(ISBN);

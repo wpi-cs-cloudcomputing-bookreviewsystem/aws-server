@@ -68,8 +68,5 @@ public class Review {
     public void setReviewId(String reviewId) {
         this.reviewId = reviewId;
     }
-    public void setReviewId() {
-        String reviewId = new UID().toString().split(":")[1];
-        this.reviewId = reviewId;
-    }
+
 }
