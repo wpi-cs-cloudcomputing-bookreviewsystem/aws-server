@@ -29,11 +29,6 @@ public class PrivateMessage {
 
     public void setPmId(String pmId) { this.pmId = pmId; }
 
-    public void setPmId() {
-        this.pmId = new UID().toString().split(":")[1];
-
-    }
-
     public String getType() { return type; }
 
     public void setType(String type) { this.type = type; }

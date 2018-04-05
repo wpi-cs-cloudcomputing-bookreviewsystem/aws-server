@@ -35,7 +35,6 @@ public class RatingDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
 
             return res;
 
@@ -68,10 +67,6 @@ public class RatingDAO {
             }
         } catch (Exception e) {
             throw new Exception("Failed in insert rating: " + e.getMessage());
-        } finally {
-            if (databaseUtil.conn != null) {
-                databaseUtil.conn.close();
-            }
         }
     }
 
@@ -91,22 +86,12 @@ public class RatingDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
             return rating;
 
         } catch (Exception e) {
             throw new Exception("Failed in getting rating by user_email: " + e.getMessage());
         }
 
-    }
-
-
-    private Rating generateRatingFromResultSet(ResultSet resultSet) throws Exception {
-        String ISBN = resultSet.getString("rating_book_id");
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUser(resultSet.getString("rating_user_id"));
-        Float score = Float.valueOf(resultSet.getString("rating_score"));
-        return new Rating(ISBN, user, score);
     }
 
     private String insertRatingQuery(Rating rating) {

@@ -23,7 +23,7 @@ public class GetUserProfileTest {
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
-        String fromEmail =  "USER1@EMAIL.COM";
+        String fromEmail =  "USER2@EMAIL.COM";
         String toEmail = "USER2@EMAIL.COM";
 
         JSONObject object=new JSONObject();

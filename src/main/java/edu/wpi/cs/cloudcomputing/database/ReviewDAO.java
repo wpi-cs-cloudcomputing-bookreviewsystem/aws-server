@@ -6,11 +6,8 @@ import edu.wpi.cs.cloudcomputing.model.Review;
 import edu.wpi.cs.cloudcomputing.model.User;
 
 import java.rmi.server.UID;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,17 +22,28 @@ public class ReviewDAO {
         this.databaseUtil = new DatabaseUtil();
     }
 
-    public boolean addReview(Review review) throws Exception {
+    public void addReview(Review review) throws Exception {
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
 
         try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String query = insertReviewQuery(review);
-            System.out.println(query);
-            statement.execute(query);
-            return true;
+            PreparedStatement statement = null;
+            String date  = databaseUtil.currentDate();
+            String query = "INSERT INTO Review (review_id, review_book_id, review_user_id, review_thumb_up_num, review_content,review_datetime) " +
+                    "values ( ? , ? , ? , ? , ? , STR_TO_DATE( ?, '%Y-%m-%d %H:%i:%s'))";
+            statement = databaseUtil.conn.prepareStatement(query);
+            statement.setString(1, review.getReviewId());
+            statement.setString(2, review.getBookISBN());
+            statement.setString(3, review.getReviewer().getEmail());
+            statement.setInt(4, review.getThumbUpNumber());
+            statement.setString(5, review.getContent());
+            statement.setString(6, date);
+            //System.out.println(statement);
+            statement.execute();
+
+            statement.close();
+
         } catch (Exception e) {
             throw new Exception("Failed too insert book: " + e.getMessage());
         }
@@ -56,7 +64,6 @@ public class ReviewDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
 
             return reviewList;
 
@@ -80,7 +87,6 @@ public class ReviewDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
             return reviewList;
         } catch (Exception e) {
             throw new Exception("Failed in getting reviews: " + e.getMessage());
@@ -96,7 +102,6 @@ public class ReviewDAO {
             String deleteQuery ="DELETE FROM Review WHERE review_id='" + reviewId + "';";
             statement.execute(deleteQuery);
             statement.close();
-            databaseUtil.conn.close();
             return true;
         } catch (Exception e) {
             throw new Exception("Failed to delete book: " + e.getMessage());
@@ -115,7 +120,6 @@ public class ReviewDAO {
             //System.out.println(updateQuery);
             statement.execute(updateQuery);
             statement.close();
-            databaseUtil.conn.close();
             return true;
         } catch (Exception e) {
             throw new Exception("Failed to update thumbUpNumber: " + e.getMessage());
@@ -148,22 +152,22 @@ public class ReviewDAO {
 
     }
 
-//    public static void main(String[] args) {
-//        ReviewDAO r1 = new ReviewDAO();
-//
-//        Review review = new Review();
-//        review.setThumbUpNumber(10);
-//        review.setBookISBN("0156031442");
-//        review.setReviewId();
-//        User u = new User();
-//        u.setEmail("TestUser@tester.com");
-//        review.setReviewer(u);
-//        review.setContent("review10");
-//        try{
-//        r1.addReview(review);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void main(String[] args) {
+        ReviewDAO r1 = new ReviewDAO();
+
+        Review review = new Review();
+        review.setThumbUpNumber(10);
+        review.setBookISBN("0156031442");
+        review.setReviewId("test2");
+        User u = new User();
+        u.setEmail("TestUser@tester.com");
+        review.setReviewer(u);
+        review.setContent("review11");
+        try{
+        r1.addReview(review);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

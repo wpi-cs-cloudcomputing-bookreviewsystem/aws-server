@@ -3,6 +3,7 @@ package edu.wpi.cs.cloudcomputing.database;
 import edu.wpi.cs.cloudcomputing.model.User;
 
 import java.rmi.server.UID;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
@@ -24,8 +25,9 @@ public class UserNetworkDAO {
         }
 
         try {
+
             Statement statement = databaseUtil.conn.createStatement();
-            String userNetworkId = new UID().toString().split(":")[1];
+            String userNetworkId = System.currentTimeMillis()%100000000+"";
             String columns = "INSERT INTO User_Network (userNetwork_id, userNetwork_user1_id, userNetwork_user2_id, isPending)";
             String values1 = "values ('" + userNetworkId + "','" + fromEmail + "','" + toEmail + "'," + 0 + ");";
             String values2 = "values ('" + userNetworkId + "','" + toEmail + "','" + fromEmail + "'," + 1 + ");";
@@ -48,13 +50,16 @@ public class UserNetworkDAO {
             databaseUtil.initDBConnection();
         }
         try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String userNetworkId = new UID().toString().split(":")[1];
-            String query = "UPDATE User_Network SET isPending = 0 WHERE userNetwork_user1_id ='" + fromEmail + "'AND userNetwork_user2_id='" + toEmail + "';";
+
+            String query = "UPDATE User_Network SET isPending = 0 WHERE userNetwork_user1_id =? AND userNetwork_user2_id=?;";
+
+            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            statement.setString(1,fromEmail);
+            statement.setString(2,toEmail);
             System.out.println(query);
-            statement.executeUpdate(query);
+            statement.executeUpdate();
             statement.close();
-            databaseUtil.conn.close();
+
 
         } catch (Exception e) {
             throw new Exception("Failed in update UserNetwork " + e.getMessage());
@@ -74,7 +79,6 @@ public class UserNetworkDAO {
             statement.executeUpdate(query1);
             statement.executeUpdate(query2);
             statement.close();
-            databaseUtil.conn.close();
 
         } catch (Exception e) {
             throw new Exception("Failed in delete UserNetwork " + e.getMessage());

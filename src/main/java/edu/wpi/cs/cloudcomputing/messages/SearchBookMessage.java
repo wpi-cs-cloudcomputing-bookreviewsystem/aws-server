@@ -4,13 +4,13 @@ package edu.wpi.cs.cloudcomputing.messages;
  * Created by tonggezhu on 3/7/18.
  */
 public class SearchBookMessage {
-    String searchWord;
+    String keyword;
 
-    public String getSearchWord() {
-        return searchWord;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setSearchWord(String searchWord) {
-        this.searchWord = searchWord;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

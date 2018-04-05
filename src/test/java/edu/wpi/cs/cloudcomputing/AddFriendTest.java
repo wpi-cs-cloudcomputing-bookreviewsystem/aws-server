@@ -24,12 +24,12 @@ public class AddFriendTest {
         AddFriendRequest = new LinkedHashMap();
         AddFriendRequest.put("fromEmail","ha.ha@ha");
         AddFriendRequest.put("toEmail","TEST2@EMAIL.COM");
-        AddFriendRequest.put("message", Common.ADD_FRIEND_REQUEST);
+        AddFriendRequest.put("title", Common.ADD_FRIEND_REQUEST);
 
         AcceptAddRequest = new LinkedHashMap<>();
         AcceptAddRequest.put("fromEmail","TEST2@EMAIL.COM");
         AcceptAddRequest.put("toEmail","ha.ha@ha");
-        AcceptAddRequest.put("message", Common.ADD_FRIEND_ACCEPT_RESPONSE);
+        AcceptAddRequest.put("title", Common.ADD_FRIEND_ACCEPT_RESPONSE);
 
 
 

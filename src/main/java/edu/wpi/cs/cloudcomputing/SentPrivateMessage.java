@@ -18,12 +18,21 @@ import java.io.StringReader;
  * Created by tonggezhu on 3/8/18.
  */
 public class SentPrivateMessage implements RequestHandler<Object, String> {
+
+    Gson gson;
+    ResponseMessage responseMsg;
+    MessageManager messageManager;
+    PMMessage message;
+
+    public SentPrivateMessage() {
+        System.out.println("sent private msg initiating");
+        gson = new GsonBuilder().create();
+        responseMsg = new ResponseMessage();
+        messageManager = new MessageManager();
+    }
+
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        Gson gson = new GsonBuilder().create();
-        ResponseMessage responseMsg = new ResponseMessage();
-        MessageManager messageManager = new MessageManager();
-        PMMessage message = null;
         try {
 //            JsonReader reader = new JsonReader(new StringReader(input.toString()));
 //            reader.setLenient(true);

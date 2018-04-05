@@ -29,7 +29,8 @@ public class MessageManager {
 
     public Boolean addMessage(String fromUserEmail, String toUserEmail, String title, String content, String type) throws Exception {
         PrivateMessage privateMessage = new PrivateMessage();
-        privateMessage.setPmId();
+        String pmId =System.currentTimeMillis()%100000000+"";
+        privateMessage.setPmId(pmId);
         privateMessage.setSenderEmail(fromUserEmail);
         privateMessage.setReceiverEmail(toUserEmail);
         privateMessage.setTitle(title);

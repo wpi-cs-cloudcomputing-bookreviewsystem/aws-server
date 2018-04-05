@@ -3,41 +3,41 @@ package edu.wpi.cs.cloudcomputing;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
-import edu.wpi.cs.cloudcomputing.controller.MessageManager;
+import edu.wpi.cs.cloudcomputing.controller.BookManager;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserIdMessage;
 
 /**
- * Created by tonggezhu on 3/22/18.
+ * Created by tonggezhu on 3/25/18.
  */
-public class ListAllPrivateMessages implements RequestHandler<Object, String> {
+public class SearchBooks implements RequestHandler<Object, String> {
 
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-
-        UserIdMessage message = null;
+        SearchBookMessage message = null;
         ResponseMessage responseMsg = new ResponseMessage();
-        MessageManager messageManager = new MessageManager();
+        BookManager bookManager = new BookManager();
         Gson gson = new Gson();
-        try {
-            message = gson.fromJson(input.toString(), UserIdMessage.class);
-            if (message == null || message.getEmail() == null) {
-                throw new Exception();
-            }
 
+        try {
+            message = gson.fromJson(input.toString(), SearchBookMessage.class);
+            if (message == null || message.getKeyword() == null) {
+                throw new Exception();
+
+            }
         } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);
         }
 
+
         try {
-            String allMessages = messageManager.getAllMessage(message.getEmail());
-            context.getLogger().log("allMessages: " + allMessages);
+            String allBooks = bookManager.getAllBooks(message.getKeyword());
+            context.getLogger().log("allbooks: " + allBooks);
             responseMsg.setStatus("SUCCESS");
-            responseMsg.setContent(allMessages);
+            responseMsg.setContent(allBooks);
         } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
@@ -47,4 +47,5 @@ public class ListAllPrivateMessages implements RequestHandler<Object, String> {
         context.getLogger().log("output: " + output);
         return output;
     }
+
 }

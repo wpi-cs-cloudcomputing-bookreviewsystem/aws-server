@@ -1,27 +1,23 @@
 package edu.wpi.cs.cloudcomputing;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-
-import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
-import org.junit.Assert;
+import com.amazonaws.services.lambda.runtime.Context;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.amazonaws.services.lambda.runtime.Context;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 
 /**
- * A simple test harness for locally invoking your Lambda function handler.
+ * Created by tonggezhu on 3/25/18.
  */
-public class ListAllBooksTest {
-
+public class ListAllPrivateMessagesTest {
     private  static LinkedHashMap<String, String> request;
 
     @BeforeClass
     public static void createInput() throws IOException {
         // TODO: set up your sample input object here.
         request = new LinkedHashMap();
-        request.put("keyword","\"animal David\"");
+        request.put("email","ha@ha.ha");
     }
 
     private Context createContext() {
@@ -35,12 +31,12 @@ public class ListAllBooksTest {
 
     @Test
     public void testListAllBooks() {
-        ListAllBooks handler = new ListAllBooks();
-        SearchBooks searchBooks = new SearchBooks();
+        ListAllPrivateMessages handler = new ListAllPrivateMessages();
+
         Context ctx = createContext();
 
-      // String output = handler.handleRequest(request, ctx);
-        String output=searchBooks.handleRequest(request,ctx);
+         String output = handler.handleRequest(request, ctx);
+
         System.out.println(output);
         // TODO: validate output here if needed.
 //        Assert.assertEquals("Hello from Lambda!", output);

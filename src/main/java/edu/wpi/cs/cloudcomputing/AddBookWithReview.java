@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
 import edu.wpi.cs.cloudcomputing.messages.AddBookWithReviewMessage;
@@ -14,14 +15,24 @@ import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
  */
 public class AddBookWithReview implements RequestHandler<Object, String> {
 
+    Gson gson;
+    AddBookWithReviewMessage message;
+    ResponseMessage responseMsg;
+    ReviewManager reviewManager;
+    BookManager bookManager;
+
+    public AddBookWithReview() {
+        System.out.println("Add Book With Review initiating");
+        gson = new GsonBuilder().create();
+        responseMsg = new ResponseMessage();
+        reviewManager = new ReviewManager();
+        bookManager = new BookManager();
+
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        Gson gson = new GsonBuilder().create();
-        AddBookWithReviewMessage  message = null;
-        ResponseMessage responseMsg = new ResponseMessage();
-        ReviewManager reviewManager = new ReviewManager();
-        BookManager bookManager = new BookManager();
         try {
             message = gson.fromJson(input.toString(), AddBookWithReviewMessage.class);
             if (message == null || message.getAuthor() == null || message.getISBN() == null
@@ -35,8 +46,8 @@ public class AddBookWithReview implements RequestHandler<Object, String> {
         }
 
         try {
-            Boolean res = reviewManager.AddReview(message.getEmail(), message.getISBN(), message.getContent());
-            res = bookManager.addBook(message.getTitle(), message.getAuthor(), message.getISBN(),
+            reviewManager.AddReview(message.getEmail(), message.getISBN(), message.getContent());
+            Boolean res = bookManager.addBook(message.getTitle(), message.getAuthor(), message.getISBN(),
                     message.getDescription(), message.getImageUrl(), message.getGenre());
             responseMsg.setStatus("SUCCESS");
             responseMsg.setContent(res.toString());

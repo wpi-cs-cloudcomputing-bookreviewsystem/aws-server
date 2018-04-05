@@ -31,11 +31,6 @@ public class Report {
         this.reportId = reviewId;
     }
 
-    public void setReportId(){
-        String id = new UID().toString().split(":")[1];
-        this.reportId = id;
-    }
-
     public String getFromUserId() {
         return fromUserId;
     }

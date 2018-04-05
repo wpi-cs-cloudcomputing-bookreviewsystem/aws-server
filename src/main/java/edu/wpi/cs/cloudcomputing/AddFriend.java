@@ -23,7 +23,6 @@ public class AddFriend implements RequestHandler<Object, String> {
         MessageManager messageManager = new MessageManager();
         PMMessage message = null;
         Gson gson = new Gson();
-        context.getLogger().log("start trans");
         try {
 
             message = gson.fromJson(input.toString(), PMMessage.class);
@@ -35,18 +34,25 @@ public class AddFriend implements RequestHandler<Object, String> {
             responseMsg.setStatus(Common.BAD_REQUEST);
             responseMsg.setContent(ex.getMessage());
         }
-        context.getLogger().log("start manager");
+
 
         try {
             if (message.getTitle().equals(Common.ADD_FRIEND_REQUEST)) {
                 userManager.addFriend(message.getFromEmail(), message.getToEmail());
-                messageManager.addMessage(message.getFromEmail(), message.getToEmail(), Common.ADD_FRIEND_REQUEST, null, Common.FRIENDSHIP);
-            } else {
+
+                messageManager.addMessage(message.getFromEmail(), message.getToEmail(), Common.ADD_FRIEND_REQUEST, Common.ADD_FREIEND_MESSAGE, Common.FRIENDSHIP);
+
+            } else if (message.getTitle().equals(Common.ADD_FRIEND_ACCEPT_RESPONSE)){
                 userManager.acceptAddFriend(message.getFromEmail(), message.getToEmail());
                 context.getLogger().log("finish UserManager");
 
-                messageManager.addMessage(message.getFromEmail(), message.getToEmail(), Common.ADD_FRIEND_ACCEPT_RESPONSE, null, Common.FRIENDSHIP);
+                messageManager.addMessage(message.getFromEmail(), message.getToEmail(), Common.ADD_FRIEND_ACCEPT_RESPONSE, Common.ADD_FREIEND_ACCEPT_MESSAGE, Common.FRIENDSHIP);
+            }else{
+                messageManager.addMessage(message.getFromEmail(), message.getToEmail(),Common.ADD_FRIEND_REJECT_RESPONSE,Common.ADD_FREIEND_REJECT_MESSAGE, Common.FRIENDSHIP);
+                userManager.rejectAddFriend(message.getFromEmail(), message.getToEmail());
+
             }
+            messageManager.readMessage(message.getPmId());
             responseMsg.setContent("true");
             responseMsg.setStatus("SUCCESS");
         } catch (Exception ex) {

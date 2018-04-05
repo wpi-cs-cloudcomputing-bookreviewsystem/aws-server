@@ -16,13 +16,23 @@ import java.io.StringReader;
  * Created by tonggezhu on 3/4/18.
  */
 public class ThumbUpNumber implements RequestHandler<Object, String> {
+
+    Gson gson;
+    ResponseMessage responseMsg;
+    ReviewManager reviewManager;
+    ThumbUpReviewMessage message;
+
+    public ThumbUpNumber() {
+        System.out.println("thunb up number initiating");
+
+        gson = new GsonBuilder().create();
+        responseMsg = new ResponseMessage();
+        reviewManager = new ReviewManager();
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        Gson gson = new GsonBuilder().create();
-        ResponseMessage responseMsg = new ResponseMessage();
-        ReviewManager reviewManager = new ReviewManager();
-        ThumbUpReviewMessage message = null;
         try {
             message = gson.fromJson(input.toString(), ThumbUpReviewMessage.class);
             if (message == null || message.getReviewId()== null

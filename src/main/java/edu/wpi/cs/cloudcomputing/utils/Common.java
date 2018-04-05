@@ -1,8 +1,8 @@
 package edu.wpi.cs.cloudcomputing.utils;
 
 public class Common {
-    public static final String access_key = "AKIAIZTQABAG2NXFXLXQ";
-    public static final String secret_key = "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";
+    public static final String access_key = "AKIAIPDYTGIEF25CQ3EQ";
+    public static final String secret_key = "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";
     public static final String cognito_pool_id = "us-east-1_0RyMdDKts";
     public static final String cognito_client_id = "m8rrod98dvdpvue0r8uhl8vo0";
 
@@ -29,6 +29,12 @@ public class Common {
     public final static String ADD_FRIEND_REQUEST = "ADD_FRIEND_REQUEST";
     public final static String ADD_FRIEND_ACCEPT_RESPONSE = "ADD_FRIEND_ACCEPT_RESPONSE";
     public final static String ADD_FRIEND_REJECT_RESPONSE = "ADD_FRIEND_REJECT_RESPONSE";
+
+    //message content
+    public final static String ADD_FREIEND_MESSAGE = "Hello, I want to be your friend!";
+    public final static String ADD_FREIEND_ACCEPT_MESSAGE = "Hello, your add friend request has been accepted.";
+    public final static String ADD_FREIEND_REJECT_MESSAGE = "Sorry, your add friend request has been rejected.";
+
 
     // database
     public final static String jdbcTag = "jdbc:mysql://";

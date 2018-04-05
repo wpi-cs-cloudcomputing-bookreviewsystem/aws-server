@@ -18,7 +18,7 @@ public class DatabaseUtil {
     protected void initDBConnection() throws Exception {
         try {
             System.out.println("start connecting......");
-            Class.forName("com.mysql.jdbc.Driver");
+            //Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(
                     Common.jdbcTag + Common.rdsMySqlDatabaseUrl + ":" + Common.rdsMySqlDatabasePort + "/" + Common.dbName +Common.multiQuerirs,
                     Common.dbUsername,
@@ -35,7 +35,7 @@ public class DatabaseUtil {
 
         SimpleDateFormat ft =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String dateTO = "STR_TO_DATE('" + ft.format(date) + "', '%Y-%m-%d %H:%i:%s')";
+        String dateTO = ft.format(date);
 
         return dateTO;
     }

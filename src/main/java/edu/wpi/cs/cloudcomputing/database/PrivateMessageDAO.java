@@ -3,6 +3,7 @@ package edu.wpi.cs.cloudcomputing.database;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ public class PrivateMessageDAO {
         List<PrivateMessage> inboxMessages = new ArrayList<>();
         try {
             PrivateMessage message = null;
-
-            Statement statement = databaseUtil.conn.createStatement();
-            String query = "SELECT * FROM Private_Message WHERE pm_to_user_id='" + email + "';";
+            String query = "SELECT * FROM Private_Message WHERE pm_to_user_id=?;";
+            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -38,7 +39,6 @@ public class PrivateMessageDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
 
             return inboxMessages;
 
@@ -57,11 +57,20 @@ public class PrivateMessageDAO {
             databaseUtil.initDBConnection();
         }
         try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String query = addPrivateMessageQuery(message);
-            statement.execute(query);
+            String date = databaseUtil.currentDate();
+            String query = "INSERT INTO Private_Message (pm_id, pm_from_user_id, pm_to_user_id, pm_title, pm_content, pm_type, pm_status, pm_datetime) values ( ? , ?, ? ,?, ? , ? , ? , STR_TO_DATE( ?, '%Y-%m-%d %H:%i:%s'))";
+            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            statement.setString(1, message.getPmId());
+            statement.setString(2, message.getSenderEmail());
+            statement.setString(3, message.getReceiverEmail());
+            statement.setString(4, message.getTitle());
+            statement.setString(5, message.getContent());
+            statement.setString(6, message.getType());
+            statement.setString(7, message.getStatus());
+            statement.setString(8, date);
+            System.out.println(statement);
+            statement.execute();
             statement.close();
-            databaseUtil.conn.close();
         } catch (Exception e) {
             throw new Exception("Failed too insert book: " + e.getMessage());
         }
@@ -76,7 +85,6 @@ public class PrivateMessageDAO {
             String query = "DELETE FROM Private_Message WHERE pm_id='" + pmId + "';";
             statement.execute(query);
             statement.close();
-            databaseUtil.conn.close();
         } catch (Exception e) {
             throw new Exception("Failed to change the status of message to READ: " + e.getMessage());
         }
@@ -92,7 +100,6 @@ public class PrivateMessageDAO {
             System.out.println(query);
             statement.execute(query);
             statement.close();
-            databaseUtil.conn.close();
         } catch (Exception e) {
             throw new Exception("Failed to change the status of message to READ: " + e.getMessage());
         }
@@ -107,12 +114,10 @@ public class PrivateMessageDAO {
             String query = "UPDATE Private_Message SET pm_status='" + Common.IGNORE + "' WHERE pm_id='" + pmId + "';";
             statement.execute(query);
             statement.close();
-            databaseUtil.conn.close();
         } catch (Exception e) {
             throw new Exception("Failed to change the status of message to IGNORE: " + e.getMessage());
         }
     }
-
 
     private PrivateMessage generatePrivateMessageFromResultSet(ResultSet resultSet) throws Exception {
         String pmId = resultSet.getString("pm_id");
@@ -122,16 +127,7 @@ public class PrivateMessageDAO {
         String content = resultSet.getString("pm_content");
         String type = resultSet.getString("pm_type");
         String status = resultSet.getString("pm_status");
-        PrivateMessage privateMessage = new PrivateMessage(pmId, fromUserEmail, toUserEmail, title, content, type, status);
+        PrivateMessage privateMessage = new PrivateMessage(pmId, fromUserEmail, toUserEmail, title, content, status, type);
         return privateMessage;
-    }
-
-    private String addPrivateMessageQuery(PrivateMessage message) {
-
-        String columns = "INSERT INTO Private_Message (pm_id, pm_from_user_id, pm_to_user_id, pm_title, pm_content, pm_type, pm_status, pm_datetime)";
-        String values = "values ('" + message.getPmId() + "','" + message.getSenderEmail() + "','" + message.getReceiverEmail() + "','" + message.getTitle()
-                + "','" + message.getContent() + "','" + message.getType() + "','" + message.getStatus() + "'," + databaseUtil.currentDate() + ");";
-        return columns + values;
-
     }
 }
