@@ -13,12 +13,18 @@ import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import static edu.wpi.cs.cloudcomputing.utils.Common.LOGGED_IN;
 
 public class LoginHandler implements RequestHandler<Object, String> {
+	ResponseMessage responseMsg;
+	Gson gson;
+	UserLoginMessage loginMessage;
 
-    @Override
+	public LoginHandler() {
+		responseMsg = new ResponseMessage();
+		gson = new GsonBuilder().create();
+	}
+
+	@Override
     public String handleRequest(Object input, Context context) {
-    	ResponseMessage responseMsg = new ResponseMessage();  
-    	Gson gson = new GsonBuilder().create();
-    	UserLoginMessage loginMessage = null;
+
         try {
         	loginMessage = gson.fromJson(input.toString(), UserLoginMessage.class);
         	if (loginMessage == null || loginMessage.getEmail() == null || loginMessage.getPassword() == null) {

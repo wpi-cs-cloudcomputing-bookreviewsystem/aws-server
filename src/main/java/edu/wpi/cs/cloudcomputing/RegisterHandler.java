@@ -15,12 +15,18 @@ import static edu.wpi.cs.cloudcomputing.utils.Common.USER_CREATED;
 
 public class RegisterHandler implements RequestHandler<Object, String> {
 
-    @Override
+	ResponseMessage responseMsg;
+	Gson gson;
+	UserRegisterMessage registerMessage;
+
+	public RegisterHandler() {
+		responseMsg = new ResponseMessage();
+		gson = new GsonBuilder().create();
+	}
+
+	@Override
     public String handleRequest(Object input, Context context) {
-    	
-    	ResponseMessage responseMsg = new ResponseMessage();  
-    	Gson gson = new GsonBuilder().create();
-    	UserRegisterMessage registerMessage = null;
+
         try {
         	registerMessage = gson.fromJson(input.toString(), UserRegisterMessage.class);
         	if (registerMessage == null || registerMessage.getUsername() == null || registerMessage.getPassword() == null || registerMessage.getEmail() == null) {

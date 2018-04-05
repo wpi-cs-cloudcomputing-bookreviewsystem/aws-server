@@ -14,7 +14,9 @@ import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 import edu.wpi.cs.cloudcomputing.model.User;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static edu.wpi.cs.cloudcomputing.utils.Common.*;
@@ -172,6 +174,18 @@ public class UserManager {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public List<String> getAllFriends(String email){
+        userNetworkDAO = new UserNetworkDAO();
+        List<String> emailList = new ArrayList<>();
+        try {
+            emailList = userNetworkDAO.getFriendsList(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return emailList;
+
     }
 
 }

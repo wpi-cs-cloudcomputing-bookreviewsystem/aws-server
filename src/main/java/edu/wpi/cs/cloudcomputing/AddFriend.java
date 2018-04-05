@@ -13,16 +13,26 @@ import edu.wpi.cs.cloudcomputing.utils.Common;
  * Created by tonggezhu on 3/7/18.
  */
 public class AddFriend implements RequestHandler<Object, String> {
+
+    ResponseMessage responseMsg;
+    UserManager userManager;
+    MessageManager messageManager;
+    PMMessage message;
+    Gson gson;
+
+    public AddFriend() {
+        System.out.println("Add friend initiating");
+        responseMsg = new ResponseMessage();
+        userManager = new UserManager();
+        messageManager = new MessageManager();
+        gson = new Gson();
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
 
         context.getLogger().log("Input: " + input);
 
-        ResponseMessage responseMsg = new ResponseMessage();
-        UserManager userManager = new UserManager();
-        MessageManager messageManager = new MessageManager();
-        PMMessage message = null;
-        Gson gson = new Gson();
         try {
 
             message = gson.fromJson(input.toString(), PMMessage.class);

@@ -49,12 +49,12 @@ public class RatingDAO {
         }
         try {
             Statement statement = databaseUtil.conn.createStatement();
-            String queryIfExist = "SELECT * FROM Rating WHERE rating_user_id='" + rating.getUser().getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
+            String queryIfExist = "SELECT * FROM Rating WHERE rating_user_id='" + rating.getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
             System.out.println(queryIfExist);
             ResultSet resultSet = statement.executeQuery(queryIfExist);
             if (resultSet.next()) {
                 String updateQuery = "UPDATE Rating SET rating_score=" + rating.getScore()
-                        + "WHERE rating_user_id='" + rating.getUser().getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
+                        + "WHERE rating_user_id='" + rating.getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
                 statement.execute(updateQuery);
                 statement.close();
                 return true;
@@ -99,7 +99,7 @@ public class RatingDAO {
         String Date = databaseUtil.currentDate();
         String columns = "INSERT INTO Rating (rating_id, rating_book_id, rating_score, rating_user_id, rating_datetime)";
         String values = " values ('" + ratingId + "', '" + rating.getBookISBN() + "', '" + rating.getScore() + "', '"
-                + rating.getUser().getEmail() + "', " + Date + ");";
+                + rating.getEmail() + "', " + Date + ");";
         System.out.println(columns + values);
         return columns + values;
     }

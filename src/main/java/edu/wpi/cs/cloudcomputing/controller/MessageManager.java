@@ -4,11 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.wpi.cs.cloudcomputing.database.PrivateMessageDAO;
+import edu.wpi.cs.cloudcomputing.model.Book;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.lang.reflect.Type;
+
+import static edu.wpi.cs.cloudcomputing.utils.Common.RECOMMANDATION;
 
 
 /**
@@ -16,7 +20,11 @@ import java.lang.reflect.Type;
  */
 public class MessageManager {
 
-    PrivateMessageDAO privateMessageDAO = null;
+    PrivateMessageDAO privateMessageDAO;
+
+    public MessageManager() {
+        this.privateMessageDAO = new PrivateMessageDAO();
+    }
 
     public String getAllMessage(String email) throws Exception {
         privateMessageDAO = new PrivateMessageDAO();
@@ -25,6 +33,14 @@ public class MessageManager {
         }.getType();
         Gson gson = new GsonBuilder().create();
         return gson.toJson(privateMessageList, listType);
+    }
+
+    public String getRecommendBooks(String email) throws Exception {
+        List<Book> bookList = privateMessageDAO.getAllBooks(email);
+        Gson gson = new GsonBuilder().create();
+        Type listType = new TypeToken<List<Book>>() {
+        }.getType();
+        return gson.toJson(bookList,listType);
     }
 
     public Boolean addMessage(String fromUserEmail, String toUserEmail, String title, String content, String type) throws Exception {

@@ -13,6 +13,20 @@ import edu.wpi.cs.cloudcomputing.utils.Common;
  * Created by tonggezhu on 3/8/18.
  */
 public class RejectAddFriendRequest implements RequestHandler<Object, String> {
+    UserManager userManager;
+    MessageManager messageManager;
+    PMMessage message;
+    ResponseMessage responseMsg;
+    Gson gson;
+
+    public RejectAddFriendRequest() {
+        System.out.println("Reject friend request initiating");
+        userManager = new UserManager();
+        messageManager = new MessageManager();
+        responseMsg = new ResponseMessage();
+        gson = new Gson();
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
 

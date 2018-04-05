@@ -1,5 +1,7 @@
 package edu.wpi.cs.cloudcomputing.database;
 
+import com.google.gson.Gson;
+import edu.wpi.cs.cloudcomputing.model.Book;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
@@ -7,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by tonggezhu on 3/7/18.
@@ -17,6 +21,36 @@ public class PrivateMessageDAO {
 
     public PrivateMessageDAO() {
         this.databaseUtil = new DatabaseUtil();
+    }
+
+    public List<Book> getAllBooks(String email) throws Exception{
+        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+            databaseUtil.initDBConnection();
+        }
+        Set<Book> bookList = new HashSet<>();
+        try {
+            String query = "SELECT * FROM Private_Message WHERE pm_to_user_id=?;";
+            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            statement.setString(1, email);
+            System.out.println(statement);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getString("pm_type").equals(Common.RECOMMANDATION)) {
+                    String content = resultSet.getString("pm_content");
+                    Gson gson = new Gson();
+                    Book book = gson.fromJson(content,Book.class);
+                    System.out.println(content);
+                    bookList.add(book);
+                }
+            }
+            resultSet.close();
+            statement.close();
+            return new ArrayList(bookList);
+
+        } catch (Exception e) {
+            throw new Exception("Failed in getting private message: " + e.getMessage());
+        }
+
     }
 
     public List<PrivateMessage> getInboxByUserEmail(String email) throws Exception {
@@ -29,11 +63,10 @@ public class PrivateMessageDAO {
             String query = "SELECT * FROM Private_Message WHERE pm_to_user_id=?;";
             PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery(query);
-
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 message = generatePrivateMessageFromResultSet(resultSet);
-                if (!message.getStatus().equals(Common.IGNORE)) {
+                if (!message.getStatus().equals(Common.IGNORE) && !message.getType().equals(Common.RECOMMANDATION)) {
                     inboxMessages.add(message);
                 }
             }
@@ -44,12 +77,10 @@ public class PrivateMessageDAO {
 
         } catch (Exception e) {
             throw new Exception("Failed in getting private message: " + e.getMessage());
-        } finally {
-            if (databaseUtil.conn != null) {
-                databaseUtil.conn.close();
-            }
         }
     }
+
+
 
     public void addPrivateMessage(PrivateMessage message) throws Exception {
 

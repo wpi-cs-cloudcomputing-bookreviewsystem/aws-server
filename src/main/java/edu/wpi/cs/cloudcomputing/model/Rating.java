@@ -7,15 +7,15 @@ import java.sql.Time;
  */
 public class Rating {
     private String bookISBN;
-    private User user;
+    private String email;
     private float score;
 
     public Rating() {
     }
 
-    public Rating(String bookISBN, User user, float score) {
+    public Rating(String bookISBN, String email, float score) {
         this.bookISBN = bookISBN;
-        this.user = user;
+        this.email = email;
         this.score = score;
     }
 
@@ -27,12 +27,12 @@ public class Rating {
         this.bookISBN = bookISBN;
     }
 
-    public User getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public float getScore() {

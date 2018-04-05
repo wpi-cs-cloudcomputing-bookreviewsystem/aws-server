@@ -10,22 +10,31 @@ import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 /**
  * Created by tonggezhu on 3/8/18.
  */
-public class DeletePrivateMessage implements RequestHandler<Object, String>{
+public class DeletePrivateMessage implements RequestHandler<Object, String> {
+
+    MessageManager messageManager;
+    ResponseMessage responseMsg;
+    PrivateMessage message;
+    Gson gson;
+
+    public DeletePrivateMessage() {
+        System.out.println("delete private message initiating");
+        messageManager = new MessageManager();
+        responseMsg = new ResponseMessage();
+        gson = new Gson();
+    }
 
     @Override
     public String handleRequest(Object input, Context context) {
-        context.getLogger().log("IgnorePrivateMessage Input: "+ input);
-        MessageManager messageManager = new MessageManager();
-        ResponseMessage responseMsg = new ResponseMessage();
-        PrivateMessage message = new PrivateMessage();
-        Gson gson = new Gson();
+        context.getLogger().log("IgnorePrivateMessage Input: " + input);
 
-        try{
+
+        try {
             message = gson.fromJson(input.toString(), PrivateMessage.class);
-            if(message == null || message.getPmId() == null){
+            if (message == null || message.getPmId() == null) {
                 throw new Exception();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             responseMsg.setStatus("FAILURE in translate input");
             responseMsg.setContent(e.getMessage());
             return gson.toJson(responseMsg);
@@ -36,8 +45,7 @@ public class DeletePrivateMessage implements RequestHandler<Object, String>{
             Boolean res = messageManager.deleteMessage(message.getPmId());
             responseMsg.setStatus("SUCCESS");
             responseMsg.setContent(res.toString());
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);

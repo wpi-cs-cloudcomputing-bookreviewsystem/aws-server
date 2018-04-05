@@ -117,7 +117,7 @@ public class UserNetworkDAO {
 
     }
 
-    public List<User> getFriendsList(User user) throws Exception {
+    public List<String> getFriendsList(String email) throws Exception {
         if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
             databaseUtil.initDBConnection();
         }
@@ -126,7 +126,7 @@ public class UserNetworkDAO {
         try {
             Statement statement = databaseUtil.conn.createStatement();
 
-            String searchQuery = "SELECT userNetwork_user2_id FROM User_Network WHERE userNetwork_user1_id='" + user.getEmail() + "';";
+            String searchQuery = "SELECT userNetwork_user2_id FROM User_Network WHERE userNetwork_user1_id='" + email+ "';";
             ResultSet resultSet = statement.executeQuery(searchQuery);
             while (resultSet.next()) {
                 usersemailList.add(resultSet.getString("userNetwork_user2_id"));
@@ -135,10 +135,9 @@ public class UserNetworkDAO {
 
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
-            List<User> setList = new ArrayList<>();
-            for (String email : usersemailList) {
-                setList.add(generateUserFromUseremail(email));
+            List<String> setList = new ArrayList<>();
+            for (String s : usersemailList) {
+                setList.add(s);
             }
             return setList;
 

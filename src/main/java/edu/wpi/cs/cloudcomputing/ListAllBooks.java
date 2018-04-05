@@ -7,9 +7,11 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
+import edu.wpi.cs.cloudcomputing.controller.RatingManager;
 import edu.wpi.cs.cloudcomputing.messages.PMMessage;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
+import edu.wpi.cs.cloudcomputing.model.Rating;
 
 import javax.naming.directory.SearchControls;
 
@@ -20,7 +22,7 @@ public class ListAllBooks implements RequestHandler<Object, String> {
     BookManager bookManager;
 
     public ListAllBooks() {
-        System.out.println("sent private msg initiating");
+        System.out.println("List all book initiating");
         responseMsg = new ResponseMessage();
         bookManager = new BookManager();
         gson = new Gson();
@@ -28,10 +30,6 @@ public class ListAllBooks implements RequestHandler<Object, String> {
 
     @Override
     public String handleRequest(Object input, Context context) {
-        context.getLogger().log("Input: " + input);
-        responseMsg = new ResponseMessage();
-        bookManager = new BookManager();
-        gson = new Gson();
 
         try {
             String allBooks = bookManager.getAllBooks(null);

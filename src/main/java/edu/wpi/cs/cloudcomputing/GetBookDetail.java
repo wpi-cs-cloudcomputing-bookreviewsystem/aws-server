@@ -6,8 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
+import edu.wpi.cs.cloudcomputing.controller.RatingManager;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.controller.ScoreManager;
 import edu.wpi.cs.cloudcomputing.messages.GetBookDetailRequest;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.model.Book;
@@ -22,7 +22,7 @@ public class GetBookDetail implements RequestHandler<Object, String> {
     ResponseMessage responseMsg;
     BookManager bookManager;
     ReviewManager reviewManager;
-    ScoreManager scoreManager;
+    RatingManager ratingManager;
 
     public GetBookDetail() {
         System.out.println("get book detail initiated");
@@ -30,8 +30,7 @@ public class GetBookDetail implements RequestHandler<Object, String> {
         responseMsg = new ResponseMessage();
         bookManager = new BookManager();
         reviewManager = new ReviewManager();
-        scoreManager = new ScoreManager();
-
+        ratingManager = new RatingManager();
     }
 
     @Override
@@ -49,9 +48,10 @@ public class GetBookDetail implements RequestHandler<Object, String> {
 
         try {       	
         	Book book = bookManager.getBook(getBookDetailRequest.getIsbn());
-        	
+        	float score = ratingManager.getScore(getBookDetailRequest.getIsbn());
         	List<Review> reviewList = reviewManager.getReviewsByBookISBN(getBookDetailRequest.getIsbn());
         	book.setReviews(reviewList);
+        	book.setScore(score);
             Gson gson2 = new GsonBuilder().create();
             String responContent = gson2.toJson(book, Book.class);
         	responseMsg.setStatus("SUCCESS");

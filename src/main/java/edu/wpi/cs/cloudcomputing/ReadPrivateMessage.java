@@ -12,13 +12,23 @@ import edu.wpi.cs.cloudcomputing.utils.Common;
  * Created by tonggezhu on 3/8/18.
  */
 public class ReadPrivateMessage implements RequestHandler<Object, String> {
+
+    PrivateMessage message;
+    MessageManager messageManager;
+    Gson gson;
+    ResponseMessage responseMsg;
+
+    public ReadPrivateMessage() {
+        System.out.println("read pm handler initiated");
+        messageManager = new MessageManager();
+        gson = new Gson();
+        responseMsg = new ResponseMessage();
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("ReadPrivateMessage Input: " + input);
-        PrivateMessage message = new PrivateMessage();
-        MessageManager messageManager = new MessageManager();
-        Gson gson = new Gson();
-        ResponseMessage responseMsg = new ResponseMessage();
+
         try {
 
             message = gson.fromJson(input.toString(), PrivateMessage.class);

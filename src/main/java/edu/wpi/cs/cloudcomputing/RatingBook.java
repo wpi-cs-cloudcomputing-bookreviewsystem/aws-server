@@ -15,35 +15,43 @@ import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
  * Created by tonggezhu on 3/2/18.
  */
 public class RatingBook implements RequestHandler<Object, String> {
+    Gson gson;
+    AddRatingMessage addRatingMessage;
+    ResponseMessage responseMsg;
+    RatingManager manager;
+
+    public RatingBook() {
+        System.out.println("ratring book handler initiated");
+        gson = new GsonBuilder().create();
+        responseMsg = new ResponseMessage();
+        manager = new RatingManager();
+    }
 
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        Gson gson = new GsonBuilder().create();
-        AddRatingMessage addRatingMessage = null;
-        ResponseMessage responseMsg = new ResponseMessage();
-        RatingManager manager = new RatingManager();
+
         try {
             addRatingMessage = gson.fromJson(input.toString(), AddRatingMessage.class);
             if (addRatingMessage == null || addRatingMessage.getScore() == null
                     || addRatingMessage.getEmail() == null
                     || addRatingMessage.getIsbn() == null) {
-                throw new Exception();}
-        }catch (Exception ex) {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);
         }
 
         try {
-            Float newScore = manager.AddRating(addRatingMessage.getEmail(),addRatingMessage.getIsbn(),addRatingMessage.getScore());
+            Float newScore = manager.addRating(addRatingMessage.getEmail(), addRatingMessage.getIsbn(), addRatingMessage.getScore());
             responseMsg.setStatus("SUCCESS");
             RatingBookResponse response = new RatingBookResponse();
             response.setScore(newScore);
             String content = gson.toJson(response, RatingBookResponse.class);
             responseMsg.setContent(content);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);

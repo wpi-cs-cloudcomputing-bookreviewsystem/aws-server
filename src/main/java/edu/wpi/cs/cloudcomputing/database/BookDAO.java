@@ -97,7 +97,6 @@ public class BookDAO {
             System.out.println();
             statement1.execute();
             statement.close();
-            databaseUtil.conn.close();
             return true;
 
         } catch (Exception e) {
@@ -114,6 +113,7 @@ public class BookDAO {
         try {
             Statement statement = databaseUtil.conn.createStatement();
             String query = "SELECT * FROM Book";
+            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -122,7 +122,6 @@ public class BookDAO {
             }
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
             return allBooks;
 
         } catch (Exception e) {
@@ -164,7 +163,6 @@ public class BookDAO {
 
     }
 
-
     private Book generateBookFromResultSet(ResultSet resultSet) throws Exception {
         String title = resultSet.getString("book_title");
         String author = resultSet.getString("book_author");
@@ -172,9 +170,7 @@ public class BookDAO {
         String description = resultSet.getString("book_description");
         String imageUrl = resultSet.getString("book_image_Url");
         String genre = resultSet.getString("book_genre");
-        RatingDAO ratingDAO = new RatingDAO();
-        Float score = ratingDAO.getAvergeRatingFromBookISBN(ISBN);
-        return new Book(title, author, ISBN, description, imageUrl, genre, score);
+        return new Book(title, author, ISBN, description, imageUrl, genre, 0.f);
     }
 
     private Book generateBookFromResultSet2(ResultSet resultSet) throws Exception {

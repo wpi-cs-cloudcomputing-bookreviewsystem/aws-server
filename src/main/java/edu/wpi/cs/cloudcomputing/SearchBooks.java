@@ -12,13 +12,21 @@ import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
  */
 public class SearchBooks implements RequestHandler<Object, String> {
 
+    SearchBookMessage message;
+    ResponseMessage responseMsg;
+    BookManager bookManager;
+    Gson gson;
+
+    public SearchBooks() {
+        System.out.println("search books initiating");
+        responseMsg = new ResponseMessage();
+        bookManager = new BookManager();
+        gson = new Gson();
+    }
+
     @Override
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        SearchBookMessage message = null;
-        ResponseMessage responseMsg = new ResponseMessage();
-        BookManager bookManager = new BookManager();
-        Gson gson = new Gson();
 
         try {
             message = gson.fromJson(input.toString(), SearchBookMessage.class);
