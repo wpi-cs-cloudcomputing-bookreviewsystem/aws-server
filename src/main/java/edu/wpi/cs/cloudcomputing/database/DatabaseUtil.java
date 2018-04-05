@@ -13,9 +13,18 @@ import java.util.Date;
  */
 public class DatabaseUtil {
 
-    Connection conn;
+    private static Connection conn;
 
-    protected void initDBConnection() throws Exception {
+    public static Connection getConnection() throws Exception{
+        if (conn == null || conn.isClosed()){
+            initDBConnection();
+        }
+        return conn;
+    }
+
+
+
+    private static void initDBConnection() throws Exception {
         try {
             System.out.println("start connecting......");
             //Class.forName("com.mysql.jdbc.Driver");
@@ -30,7 +39,7 @@ public class DatabaseUtil {
         }
     }
 
-    public String currentDate() {
+    public static String currentDate() {
         Date date = new Date();
 
         SimpleDateFormat ft =

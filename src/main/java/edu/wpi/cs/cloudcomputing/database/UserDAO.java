@@ -6,23 +6,23 @@ import edu.wpi.cs.cloudcomputing.model.User;
 
 public class UserDAO {
 
-    DatabaseUtil databaseUtil;
+//    DatabaseUtil databaseUtil;
 
-    public UserDAO() {
-        databaseUtil = new DatabaseUtil();
-    }
+//    public UserDAO() {
+//        databaseUtil = new DatabaseUtil();
+//    }
 
     public void saveUser(User user) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (DatabaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
 
             PreparedStatement statement = null;
             User existingUser = null;
             String query = "SELECT * FROM User WHERE user_email = ?";
 
-            statement = databaseUtil.conn.prepareStatement(query);
+            statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(1, user.getEmail());
             ResultSet resultSet = statement.executeQuery();
 
@@ -42,7 +42,7 @@ public class UserDAO {
 
             String insertQuery = "INSERT INTO User (user_id, user_name, user_email) VALUES (null, ? , ?)";
 
-            statement = databaseUtil.conn.prepareStatement(insertQuery);
+            statement = DatabaseUtil.getConnection().prepareStatement(insertQuery);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getEmail());
 
@@ -53,24 +53,20 @@ public class UserDAO {
 
         } catch (Exception e) {
             throw new Exception("Failed in getting user: " + e.getMessage());
-        } finally {
-            if (databaseUtil.conn != null) {
-                databaseUtil.conn.close();
-            }
         }
     }
 
     public User getUser(String emailAddress) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
 
         try {
             User user = null;
 
             PreparedStatement statement = null;
             String query = "SELECT * FROM User WHERE user_email = ?";
-            statement = databaseUtil.conn.prepareStatement(query);
+            statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(1, emailAddress);
             ResultSet resultSet = statement.executeQuery();
 
@@ -89,6 +85,7 @@ public class UserDAO {
 
             resultSet.close();
             statement.close();
+            System.out.println("-=====--"+DatabaseUtil.getConnection().isClosed());
 
             return user;
 

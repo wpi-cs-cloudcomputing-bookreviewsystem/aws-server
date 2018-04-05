@@ -12,19 +12,19 @@ import java.sql.Statement;
  * Created by tonggezhu on 2/25/18.
  */
 public class RatingDAO {
-    DatabaseUtil databaseUtil;
-
-    public RatingDAO() {
-        this.databaseUtil = new DatabaseUtil();
-    }
+//    DatabaseUtil databaseUtil;
+//
+//    public RatingDAO() {
+//        this.databaseUtil = new DatabaseUtil();
+//    }
 
     public float getAvergeRatingFromBookISBN(String bookISBN) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         Float res = 0.0f;
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
 
             String query = "SELECT AVG(rating_score) AS avg_rating FROM Rating WHERE rating_book_id='" + bookISBN + "';";
             System.out.println(query);
@@ -44,11 +44,11 @@ public class RatingDAO {
     }
 
     public boolean addRating(Rating rating) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String queryIfExist = "SELECT * FROM Rating WHERE rating_user_id='" + rating.getEmail() + "'and rating_book_id='" + rating.getBookISBN() + "' ;";
             System.out.println(queryIfExist);
             ResultSet resultSet = statement.executeQuery(queryIfExist);
@@ -71,12 +71,12 @@ public class RatingDAO {
     }
 
     public Float getRatingByUserId(String useremail, String bookISBN) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         Float rating = null;
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
 
             String query = "SELECT * FROM Rating WHERE rating_user_id='" + useremail + "' and rating_book_id='" + bookISBN + "';";
             ResultSet resultSet = statement.executeQuery(query);
@@ -96,7 +96,7 @@ public class RatingDAO {
 
     private String insertRatingQuery(Rating rating) {
         String ratingId = new UID().toString().split(":")[1];
-        String Date = databaseUtil.currentDate();
+        String Date = DatabaseUtil.currentDate();
         String columns = "INSERT INTO Rating (rating_id, rating_book_id, rating_score, rating_user_id, rating_datetime)";
         String values = " values ('" + ratingId + "', '" + rating.getBookISBN() + "', '" + rating.getScore() + "', '"
                 + rating.getEmail() + "', " + Date + ");";

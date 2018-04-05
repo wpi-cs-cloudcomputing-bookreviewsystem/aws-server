@@ -12,21 +12,21 @@ import java.util.*;
  * Created by tonggezhu on 2/27/18.
  */
 public class UserNetworkDAO {
-    DatabaseUtil databaseUtil = new DatabaseUtil();
+    //DatabaseUtil databaseUtil = new DatabaseUtil();
 
-    public UserNetworkDAO() {
-        databaseUtil = new DatabaseUtil();
-    }
+//    public UserNetworkDAO() {
+//        databaseUtil = new DatabaseUtil();
+//    }
 
     public void addFriend(String fromEmail, String toEmail) throws Exception {
 
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
 
         try {
 
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String userNetworkId = System.currentTimeMillis()%100000000+"";
             String columns = "INSERT INTO User_Network (userNetwork_id, userNetwork_user1_id, userNetwork_user2_id, isPending)";
             String values1 = "values ('" + userNetworkId + "','" + fromEmail + "','" + toEmail + "'," + 0 + ");";
@@ -37,7 +37,6 @@ public class UserNetworkDAO {
             statement.executeUpdate(query2);
 
             statement.close();
-            databaseUtil.conn.close();
 
         } catch (Exception e) {
             throw new Exception("Failed in insert UserNetwork " + e.getMessage());
@@ -46,14 +45,14 @@ public class UserNetworkDAO {
     }
 
     public void acceptAddFriend(String fromEmail, String toEmail) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
 
             String query = "UPDATE User_Network SET isPending = 0 WHERE userNetwork_user1_id =? AND userNetwork_user2_id=?;";
 
-            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            PreparedStatement statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(1,fromEmail);
             statement.setString(2,toEmail);
             System.out.println(query);
@@ -68,11 +67,11 @@ public class UserNetworkDAO {
     }
 
     public void rejectAddFriend(String fromEmail, String toEmail) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query1 = "DELETE FROM User_Network WHERE userNetwork_user1_id ='" + fromEmail + "' AND userNetwork_user2_id='" + toEmail + "';";
             String query2 = "DELETE FROM User_Network WHERE userNetwork_user1_id ='" + toEmail + "' AND userNetwork_user2_id='" + fromEmail + "';";
             System.out.println(query1);
@@ -86,13 +85,13 @@ public class UserNetworkDAO {
     }
 
     public String checkFriendship(String myEmail, String requestEmail) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         StringBuilder sb = new StringBuilder();
         ResultSet resultSet = null;
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "SELECT isPending FROM User_Network WHERE (userNetwork_user1_id='" + myEmail + "' AND userNetwork_user2_id='" + requestEmail + "') OR (userNetwork_user1_id='" + requestEmail + "'AND userNetwork_user2_id='" + myEmail + "');";
             System.out.println(query);
 
@@ -103,7 +102,7 @@ public class UserNetworkDAO {
 
             resultSet.close();
             statement.close();
-            databaseUtil.conn.close();
+
             if (sb.toString().equals("01")) {
                 return "pending";
             } else if (sb.toString().equals("00")) {
@@ -118,13 +117,13 @@ public class UserNetworkDAO {
     }
 
     public List<String> getFriendsList(String email) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
 
         Set<String> usersemailList = new HashSet<>();
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
 
             String searchQuery = "SELECT userNetwork_user2_id FROM User_Network WHERE userNetwork_user1_id='" + email+ "';";
             ResultSet resultSet = statement.executeQuery(searchQuery);

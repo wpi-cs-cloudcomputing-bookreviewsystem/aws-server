@@ -35,6 +35,10 @@ public class Common {
     public final static String ADD_FREIEND_ACCEPT_MESSAGE = "Hello, your add friend request has been accepted.";
     public final static String ADD_FREIEND_REJECT_MESSAGE = "Sorry, your add friend request has been rejected.";
 
+    //message title
+    public final static String RECOMMANDATION_BOOK = "You must to read this book!";
+
+
 
     // database
     public final static String jdbcTag = "jdbc:mysql://";

@@ -9,18 +9,18 @@ import java.sql.Statement;
  * Created by tonggezhu on 3/1/18.
  */
 public class ReportDAO {
-    DatabaseUtil databaseUtil;
-
-    public ReportDAO() {
-        this.databaseUtil = new DatabaseUtil();
-    }
+//    DatabaseUtil databaseUtil;
+//
+//    public ReportDAO() {
+//        this.databaseUtil = new DatabaseUtil();
+//    }
 
     public void addReport(Report report) throws Exception{
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "UPDATE Report SET report_process = 1 WHERE report_id='" + report.getReportId() +"';";
             statement.execute(query);
         } catch (Exception e) {
@@ -29,12 +29,12 @@ public class ReportDAO {
     }
 
     public void updateReport(Report report) throws Exception{
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
 
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = insertReportQuery(report);
             statement.execute(query);
 
@@ -46,7 +46,7 @@ public class ReportDAO {
 
 
     private String insertReportQuery(Report report){
-        String Date = databaseUtil.currentDate();
+        String Date = DatabaseUtil.currentDate();
         String columns = "INSERT INTO Report (report_id, report_from_user, report_to_user, report_reason, report_datetime, report_process)";
         String values = " values ('" + report.getReportId() + "', '" + report.getFromUserId() + "', '" + report.getToUserId() + "', '"
                 + report.getReason()+ "', '" + Date + "'," + 0 + ");";

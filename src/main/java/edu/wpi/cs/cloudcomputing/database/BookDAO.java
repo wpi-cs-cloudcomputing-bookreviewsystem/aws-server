@@ -10,21 +10,21 @@ import edu.wpi.cs.cloudcomputing.model.Book;
 
 public class BookDAO {
 
-    DatabaseUtil databaseUtil;
-
-    public BookDAO() {
-        databaseUtil = new DatabaseUtil();
-    }
+//    DatabaseUtil databaseUtil;
+//
+//    public BookDAO() {
+//        databaseUtil = new DatabaseUtil();
+//    }
 
     public Book getBook(String bookISBN) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         try {
             Book book = null;
 
             String query = "SELECT * FROM Book WHERE book_isbn=?;";
-            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            PreparedStatement statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(1, bookISBN);
             ResultSet resultSet = statement.executeQuery();
 
@@ -42,42 +42,39 @@ public class BookDAO {
 
         } catch (Exception e) {
             throw new Exception("Failed in getting book: " + e.getMessage());
-        } finally {
-            if (databaseUtil.conn != null) {
-                databaseUtil.conn.close();
-            }
         }
+
     }
 
-    public boolean updateBook(Book book) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
-        Boolean res = false;
-        try {
-            Statement statement = databaseUtil.conn.createStatement();
-            String update = "book_title = '" + book.getTitle()
-                    + "', book_author='" + book.getAuthor()
-                    + "', book_description='" + book.getDescription()
-                    + "', book_image_url='" + book.getImageUrl()
-                    + "', book_genre='" + book.getGenre() + "'";
-            String query = "UPDATE Book SET" + update + "WHERE book_isbn='" + book.getISBN() + "';";
-            res = statement.execute(query);
-            return res;
-        } catch (Exception e) {
-            throw new Exception("Failed too insert report: " + e.getMessage());
-        }
-
-
-    }
+//    public boolean updateBook(Book book) throws Exception {
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
+//        Boolean res = false;
+//        try {
+//            Statement statement = databaseUtil.conn.createStatement();
+//            String update = "book_title = '" + book.getTitle()
+//                    + "', book_author='" + book.getAuthor()
+//                    + "', book_description='" + book.getDescription()
+//                    + "', book_image_url='" + book.getImageUrl()
+//                    + "', book_genre='" + book.getGenre() + "'";
+//            String query = "UPDATE Book SET" + update + "WHERE book_isbn='" + book.getISBN() + "';";
+//            res = statement.execute(query);
+//            return res;
+//        } catch (Exception e) {
+//            throw new Exception("Failed too insert report: " + e.getMessage());
+//        }
+//
+//
+//    }
 
     public boolean addBook(Book book) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         String bookISBN = book.getISBN();
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "SELECT * FROM Book WHERE book_isbn = '" + bookISBN + "';";
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -87,14 +84,13 @@ public class BookDAO {
                 resultSet.close();
                 return false;
             }
-            PreparedStatement statement1 = databaseUtil.conn.prepareStatement(insertBookQuery());
+            PreparedStatement statement1 = DatabaseUtil.getConnection().prepareStatement(insertBookQuery());
             statement1.setString(1, book.getTitle());
             statement1.setString(2, book.getAuthor());
             statement1.setString(3, book.getISBN());
             statement1.setString(4, book.getDescription());
             statement1.setString(5, book.getImageUrl());
             statement1.setString(6, book.getGenre());
-            System.out.println();
             statement1.execute();
             statement.close();
             return true;
@@ -105,13 +101,13 @@ public class BookDAO {
     }
 
     public List<Book> getAllBooks() throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         List<Book> allBooks = new ArrayList<>();
 
         try {
-            Statement statement = databaseUtil.conn.createStatement();
+            Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "SELECT * FROM Book";
             System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
@@ -133,16 +129,16 @@ public class BookDAO {
 
 
     public List<Book> getAllBooks(String[] words) throws Exception {
-        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-            databaseUtil.initDBConnection();
-        }
+//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
+//            databaseUtil.initDBConnection();
+//        }
         Set<Book> res = new HashSet<>();
 
         for (String word : words) {
             ResultSet resultSet = null;
 
             String query = "SELECT * FROM Book WHERE book_title like ? OR book_author like ? OR book_description like ? OR book_isbn=?;";
-            PreparedStatement statement = databaseUtil.conn.prepareStatement(query);
+            PreparedStatement statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(4, word);
 
             word = "%" + word + "%";
