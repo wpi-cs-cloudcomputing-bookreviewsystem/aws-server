@@ -11,13 +11,13 @@ import edu.wpi.cs.cloudcomputing.controller.UserManager;
 import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 
-public class registerToAppHandler implements RequestHandler<Object, String> {
+public class RegisterToAppHandler implements RequestHandler<Object, String> {
 
 	ResponseMessage responseMsg;
 	Gson gson;
 	UserRegisterMessage registerMessage;
 
-	public registerToAppHandler() {
+	public RegisterToAppHandler() {
 		responseMsg = new ResponseMessage();
 		gson = new GsonBuilder().create();
 	}

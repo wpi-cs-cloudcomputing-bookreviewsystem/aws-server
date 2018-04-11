@@ -4,15 +4,14 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClient;
 import com.amazonaws.services.cognitoidp.model.*;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
+import com.google.gson.JsonObject;
 import edu.wpi.cs.cloudcomputing.database.UserDAO;
 import edu.wpi.cs.cloudcomputing.database.UserNetworkDAO;
 import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
 import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
 import edu.wpi.cs.cloudcomputing.model.User;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,15 +132,14 @@ public class UserManager {
     public String getUserProfile(String myEmail, String requestEmail) throws Exception {
     	String res = "";
     	User user = userDAO.getUser(requestEmail);
-        Gson gson = new GsonBuilder().create();
         String userInfo = gson.toJson(user, User.class);
     	if(myEmail.equals(requestEmail)){
             return userInfo;
         }else{
     	    userNetworkDAO = new UserNetworkDAO();
     	    String friendship = userNetworkDAO.checkFriendship(myEmail, requestEmail);
-            JSONObject object=new JSONObject(user);
-            object.put("isfriend",friendship);
+    	    JsonObject object = (JsonObject)gson.toJsonTree(user);
+            object.addProperty("isfriend", friendship);
             return object.toString();
         }
     }

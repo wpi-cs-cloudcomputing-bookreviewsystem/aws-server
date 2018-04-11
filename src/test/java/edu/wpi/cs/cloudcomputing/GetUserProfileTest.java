@@ -3,15 +3,11 @@ package edu.wpi.cs.cloudcomputing;
 import java.io.IOException;
 
 import com.google.gson.JsonObject;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.Gson;
 
-import edu.wpi.cs.cloudcomputing.model.User;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -26,9 +22,9 @@ public class GetUserProfileTest {
         String fromEmail =  "USER2@EMAIL.COM";
         String toEmail = "USER2@EMAIL.COM";
 
-        JSONObject object=new JSONObject();
-        object.put("fromEmail",fromEmail);
-        object.put("toEmail",toEmail);
+        JsonObject object=new JsonObject();
+        object.addProperty("fromEmail",fromEmail);
+        object.addProperty("toEmail",toEmail);
 
         input = object.toString();
         System.out.println(input);
