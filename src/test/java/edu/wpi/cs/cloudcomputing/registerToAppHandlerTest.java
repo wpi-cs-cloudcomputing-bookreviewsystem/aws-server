@@ -30,13 +30,5 @@ public class registerToAppHandlerTest {
         return ctx;
     }
 
-    @Test
-    public void testregisterToAppHandler() {
-        registerToAppHandler handler = new registerToAppHandler();
-        Context ctx = createContext();
 
-        String output = handler.handleRequest(input, ctx);
-
-        // TODO: validate output here if needed.
-    }
 }
