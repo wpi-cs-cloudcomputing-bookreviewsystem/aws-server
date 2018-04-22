@@ -16,14 +16,11 @@ public class GetBookDetailTest {
 
     @BeforeClass
     public static void createInput() throws IOException {
-        // TODO: set up your sample input object here.
         input = "{\"isbn\": \"0156031442\"}";
     }
 
     private Context createContext() {
         TestContext ctx = new TestContext();
-
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
@@ -36,7 +33,5 @@ public class GetBookDetailTest {
 
         String output = handler.handleRequest(input, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
     }
 }

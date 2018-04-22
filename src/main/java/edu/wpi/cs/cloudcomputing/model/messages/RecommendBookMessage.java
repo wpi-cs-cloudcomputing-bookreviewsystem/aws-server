@@ -1,4 +1,4 @@
-package edu.wpi.cs.cloudcomputing.messages;
+package edu.wpi.cs.cloudcomputing.model.messages;
 
 /**
  * Created by tonggezhu on 4/4/18.

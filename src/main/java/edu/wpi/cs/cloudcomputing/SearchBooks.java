@@ -4,8 +4,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.SearchBookMessage;
 
 /**
  * Created by tonggezhu on 3/25/18.

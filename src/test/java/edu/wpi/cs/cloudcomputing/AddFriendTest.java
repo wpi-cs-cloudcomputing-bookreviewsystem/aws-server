@@ -31,15 +31,11 @@ public class AddFriendTest {
         AcceptAddRequest.put("toEmail","ha.ha@ha");
         AcceptAddRequest.put("title", Common.ADD_FRIEND_ACCEPT_RESPONSE);
 
-
-
-
     }
 
     private Context createContext() {
         TestContext ctx = new TestContext();
 
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
@@ -52,8 +48,7 @@ public class AddFriendTest {
 
         String output = handler.handleRequest(AcceptAddRequest, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
+
     }
 
 }

@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.UserRegisterMessage;
 
 public class RegisterToAppHandler implements RequestHandler<Object, String> {
 

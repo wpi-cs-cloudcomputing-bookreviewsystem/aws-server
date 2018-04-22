@@ -10,14 +10,16 @@ import java.util.List;
 public class ReviewManager {
     ReviewDAO reviewDAO;
 
-    public List<Review> getReviewsByBookISBN(String isbn) throws Exception{
+    public ReviewManager(){
         reviewDAO = new ReviewDAO();
+    }
+
+    public List<Review> getReviewsByBookISBN(String isbn) throws Exception{
         List<Review> reviewList = reviewDAO.getAllReviewByBookISBN(isbn);
         return reviewList;
     }
 
     public boolean AddReview(String userEmail, String ISBN, String content) throws Exception{
-        reviewDAO = new ReviewDAO();
         Review review = new Review();
         String reviewId =System.currentTimeMillis()%100000000+"";
         review.setReviewId(reviewId);
@@ -34,7 +36,6 @@ public class ReviewManager {
 
     public boolean thumbUpReview(String reviewId, Integer thumbUpNum) throws Exception{
         Boolean res = false;
-        reviewDAO = new ReviewDAO();
         Review review = new Review();
         review.setThumbUpNumber(thumbUpNum+1);
         review.setReviewId(reviewId);

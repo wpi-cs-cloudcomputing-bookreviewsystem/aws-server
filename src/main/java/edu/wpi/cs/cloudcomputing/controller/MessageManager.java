@@ -26,6 +26,7 @@ public class MessageManager {
         this.privateMessageDAO = new PrivateMessageDAO();
     }
 
+    //get all the messages
     public String getAllMessage(String email) throws Exception {
         privateMessageDAO = new PrivateMessageDAO();
         List<PrivateMessage> privateMessageList = privateMessageDAO.getInboxByUserEmail(email);
@@ -35,6 +36,7 @@ public class MessageManager {
         return gson.toJson(privateMessageList, listType);
     }
 
+    //get all the recommend book messages
     public String getRecommendBooks(String email) throws Exception {
         List<Book> bookList = privateMessageDAO.getAllBooks(email);
         Gson gson = new GsonBuilder().create();
@@ -43,6 +45,7 @@ public class MessageManager {
         return gson.toJson(bookList,listType);
     }
 
+    //add message to db
     public Boolean addMessage(String fromUserEmail, String toUserEmail, String title, String content, String type) throws Exception {
         PrivateMessage privateMessage = new PrivateMessage();
         String pmId =System.currentTimeMillis()%100000000+"";
@@ -61,7 +64,6 @@ public class MessageManager {
     public Boolean readMessage(String pmId) throws Exception {
         privateMessageDAO = new PrivateMessageDAO();
         privateMessageDAO.readPrivateMessage(pmId);
-
         return true;
     }
 

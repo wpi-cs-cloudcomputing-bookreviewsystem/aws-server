@@ -5,8 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
-import edu.wpi.cs.cloudcomputing.messages.PMMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.PMMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
 /**
@@ -41,20 +41,20 @@ public class RejectAddFriendRequest implements RequestHandler<Object, String> {
 
             message = gson.fromJson(input.toString(), PMMessage.class);
             if (message == null || message.getFromEmail() == null
-                    || message.getToEmail() == null ){
-                throw new Exception();}
-        }
-        catch(Exception ex) {
+                    || message.getToEmail() == null) {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
             responseMsg.setStatus(Common.BAD_REQUEST);
             responseMsg.setContent(ex.getMessage());
         }
 
-        try{
-            messageManager.addMessage(message.getFromEmail(), message.getToEmail(),Common.ADD_FRIEND_REJECT_RESPONSE,null, Common.FRIENDSHIP);
+        try {
+            messageManager.addMessage(message.getFromEmail(), message.getToEmail(), Common.ADD_FRIEND_REJECT_RESPONSE, null, Common.FRIENDSHIP);
             userManager.rejectAddFriend(message.getFromEmail(), message.getToEmail());
             responseMsg.setStatus(Common.SUCCESS);
             responseMsg.setContent("true");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);

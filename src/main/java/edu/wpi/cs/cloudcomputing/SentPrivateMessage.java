@@ -4,15 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
-import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.PMMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.ThumbUpReviewMessage;
-import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
-
-import java.io.StringReader;
+import edu.wpi.cs.cloudcomputing.model.messages.PMMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 
 /**
  * Created by tonggezhu on 3/8/18.
@@ -34,8 +28,6 @@ public class SentPrivateMessage implements RequestHandler<Object, String> {
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
         try {
-//            JsonReader reader = new JsonReader(new StringReader(input.toString()));
-//            reader.setLenient(true);
             message = gson.fromJson(input.toString(), PMMessage.class);
             if (message == null || message.getFromEmail()== null
                     || message.getToEmail() == null || message.getTitle() == null ) {

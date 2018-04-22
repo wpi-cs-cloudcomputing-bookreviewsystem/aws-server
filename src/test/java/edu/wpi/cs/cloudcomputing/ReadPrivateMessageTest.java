@@ -14,37 +14,33 @@ import static org.junit.Assert.*;
  * Created by tonggezhu on 3/8/18.
  */
 public class ReadPrivateMessageTest {
-    private  static LinkedHashMap<String, String> request;
+    private static LinkedHashMap<String, String> request;
 
     @BeforeClass
     public static void createInput() throws IOException {
 
         request = new LinkedHashMap();
-        request.put("pmId","1621167c4cb");
-
+        request.put("pmId", "1621167c4cb");
     }
 
     private Context createContext() {
         TestContext ctx = new TestContext();
 
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
     }
 
     @Test
-    public void readPrivateMessage(){
+    public void readPrivateMessage() {
         ReadPrivateMessage handler = new ReadPrivateMessage();
         Context ctx = createContext();
         System.out.println(request);
 
         String output = handler.handleRequest(request, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
-    }
 
+    }
 
 
 }

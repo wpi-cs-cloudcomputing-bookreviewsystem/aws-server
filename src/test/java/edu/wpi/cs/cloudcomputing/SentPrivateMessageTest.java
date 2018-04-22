@@ -13,14 +13,14 @@ import java.util.LinkedHashMap;
  */
 public class SentPrivateMessageTest {
 
-    private  static LinkedHashMap<String, String> privateMessage;
+    private static LinkedHashMap<String, String> privateMessage;
 
     @BeforeClass
     public static void createInput() throws IOException {
 
         privateMessage = new LinkedHashMap<>();
-        privateMessage.put("fromEmail","TEST8@EMAIL.COM");
-        privateMessage.put("toEmail","ha.ha@ha");
+        privateMessage.put("fromEmail", "TEST8@EMAIL.COM");
+        privateMessage.put("toEmail", "ha.ha@ha");
         privateMessage.put("title", "\"Hello lalala\"");
         privateMessage.put("content", "\"test test test\"");
         privateMessage.put("type", Common.MESSAGE);
@@ -29,23 +29,18 @@ public class SentPrivateMessageTest {
 
     private Context createContext() {
         TestContext ctx = new TestContext();
-
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
     }
 
     @Test
-    public void sendPrivateMessage(){
+    public void sendPrivateMessage() {
         SentPrivateMessage handler = new SentPrivateMessage();
         Context ctx = createContext();
 
         String output = handler.handleRequest(privateMessage, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
+
     }
-
-
 }

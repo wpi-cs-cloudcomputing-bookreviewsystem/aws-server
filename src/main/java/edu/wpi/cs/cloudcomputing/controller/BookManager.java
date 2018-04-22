@@ -17,37 +17,35 @@ import static com.amazonaws.services.kms.model.KeyManagerType.AWS;
 public class BookManager {
     BookDAO bookDAO = null;
 
+    public BookManager(){
+        bookDAO = new BookDAO();
+    }
+
+    //get all books or search books by keywords
     public String getAllBooks(String words) throws Exception {
 
-        bookDAO = new BookDAO();
         List<Book> allBooks = null;
         if(words == null){
             allBooks = bookDAO.getAllBooks();
         }else{
             String[] wordList = words.split(" ");
-            for(String word: wordList){
-                System.out.println("========"+word);
-            }
-
             allBooks = bookDAO.getAllBooks(wordList);
         }
         Gson gson = new GsonBuilder().create();
         Type listType = new TypeToken<List<Book>>() {
         }.getType();
-
-
         return gson.toJson(allBooks, listType);
     }
 
+    //get book by ISBN
     public Book getBook(String isbn) throws Exception {
-        bookDAO = new BookDAO();
         Book book = bookDAO.getBook(isbn);
         return book;
     }
 
+    //add book with review
     public Boolean addBook(String title, String author, String ISBN,
                            String description, String imageUrl, String genre) throws Exception {
-        bookDAO = new BookDAO();
         Book book = new Book(title, author, ISBN, description, imageUrl, genre, 0f);
         Boolean res = bookDAO.addBook(book);
         return res;

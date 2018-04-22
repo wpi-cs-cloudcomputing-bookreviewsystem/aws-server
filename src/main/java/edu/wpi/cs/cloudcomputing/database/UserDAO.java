@@ -6,18 +6,9 @@ import edu.wpi.cs.cloudcomputing.model.User;
 
 public class UserDAO {
 
-//    DatabaseUtil databaseUtil;
-
-//    public UserDAO() {
-//        databaseUtil = new DatabaseUtil();
-//    }
-
     public void saveUser(User user) throws Exception {
-//        if (DatabaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
-        try {
 
+        try {
             PreparedStatement statement = null;
             User existingUser = null;
             String query = "SELECT * FROM User WHERE user_email = ?";
@@ -26,13 +17,6 @@ public class UserDAO {
             statement.setString(1, user.getEmail());
             ResultSet resultSet = statement.executeQuery();
 
-
-
-//            Statement statement = databaseUtil.conn.createStatement();
-//            User existingUser = null;
-//            String searchQuery = "SELECT * FROM User WHERE user_email='" + user.getEmail() + "';";
-//            System.out.println(searchQuery);
-//            ResultSet resultSet = statement.executeQuery(searchQuery);
             while (resultSet.next()) {
                 existingUser = generateUserFromResultSet(resultSet);
             }
@@ -57,9 +41,6 @@ public class UserDAO {
     }
 
     public User getUser(String emailAddress) throws Exception {
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
 
         try {
             User user = null;
@@ -70,22 +51,14 @@ public class UserDAO {
             statement.setString(1, emailAddress);
             ResultSet resultSet = statement.executeQuery();
 
-
-//            Statement statement = databaseUtil.conn.createStatement();
-//            String query = "SELECT * FROM User WHERE user_email='" + emailAddress + "';";
-//            System.out.println(query);
-//            ResultSet resultSet = statement.executeQuery(query);
-
             while (resultSet.next()) {
                 user = generateUserFromResultSet(resultSet);
             }
             if (user == null) {
                 throw new Exception("User not found");
             }
-
             resultSet.close();
             statement.close();
-            System.out.println("-=====--"+DatabaseUtil.getConnection().isClosed());
 
             return user;
 
@@ -101,18 +74,4 @@ public class UserDAO {
         user.setEmail(resultSet.getString("user_email"));
         return user;
     }
-
-
-//    public static void main(String[] args) {
-//        UserDAO userDAO = new UserDAO();
-//        User user1 = new User("USER10", "USER10@EMAIL.COM");
-////        User user2 = new User("USER2", "USER2@EMAIL.COM");
-//        try {
-//            userDAO.saveUser(user1);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

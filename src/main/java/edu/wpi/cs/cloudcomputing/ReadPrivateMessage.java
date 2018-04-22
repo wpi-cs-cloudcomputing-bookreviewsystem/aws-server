@@ -4,13 +4,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
-/**
- * Created by tonggezhu on 3/8/18.
- */
+
 public class ReadPrivateMessage implements RequestHandler<Object, String> {
 
     PrivateMessage message;

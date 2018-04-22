@@ -16,40 +16,32 @@ import static org.junit.Assert.*;
  */
 public class RejectAddFriendRequestTest {
 
-    private  static LinkedHashMap<String, String> RejectAddRequest;
+    private static LinkedHashMap<String, String> RejectAddRequest;
 
     @BeforeClass
     public static void createInput() throws IOException {
 
-
         RejectAddRequest = new LinkedHashMap<>();
-        RejectAddRequest.put("fromEmail","TEST8@EMAIL.COM");
-        RejectAddRequest.put("toEmail","ha.ha@ha");
+        RejectAddRequest.put("fromEmail", "TEST8@EMAIL.COM");
+        RejectAddRequest.put("toEmail", "ha.ha@ha");
         RejectAddRequest.put("message", Common.ADD_FRIEND_REJECT_RESPONSE);
 
     }
 
     private Context createContext() {
         TestContext ctx = new TestContext();
-
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
     }
 
     @Test
-    public void setRejectAddFriend(){
+    public void setRejectAddFriend() {
         RejectAddFriendRequest handler = new RejectAddFriendRequest();
         Context ctx = createContext();
 
         String output = handler.handleRequest(RejectAddRequest, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
+
     }
-
-
-
-
 }

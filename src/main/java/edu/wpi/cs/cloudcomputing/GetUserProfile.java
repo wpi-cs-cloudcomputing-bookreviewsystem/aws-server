@@ -5,8 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
-import edu.wpi.cs.cloudcomputing.messages.GetProfileMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.GetProfileMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.utils.Common;
 
 public class GetUserProfile implements RequestHandler<Object, String> {

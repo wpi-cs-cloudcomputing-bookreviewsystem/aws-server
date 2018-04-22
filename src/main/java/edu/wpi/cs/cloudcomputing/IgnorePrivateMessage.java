@@ -1,11 +1,10 @@
 package edu.wpi.cs.cloudcomputing;
 
-import com.amazonaws.PredefinedClientConfigurations;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.model.PrivateMessage;
 
 /**

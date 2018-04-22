@@ -3,8 +3,6 @@ package edu.wpi.cs.cloudcomputing;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import edu.wpi.cs.cloudcomputing.messages.SearchBookMessage;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

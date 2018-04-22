@@ -17,19 +17,22 @@ public class DatabaseUtil {
 
     public static Connection getConnection() throws Exception{
         if (conn == null || conn.isClosed()){
-            initDBConnection();
+            synchronized (DatabaseUtil.class){
+                if (conn == null || conn.isClosed()){
+                    initDBConnection();
+                }
+            }
         }
         return conn;
     }
-
-
 
     private static void initDBConnection() throws Exception {
         try {
             System.out.println("start connecting......");
             //Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    Common.jdbcTag + Common.rdsMySqlDatabaseUrl + ":" + Common.rdsMySqlDatabasePort + "/" + Common.dbName +Common.multiQuerirs,
+                    Common.jdbcTag + Common.rdsMySqlDatabaseUrl + ":"
+                            + Common.rdsMySqlDatabasePort + "/" + Common.dbName +Common.multiQuerirs,
                     Common.dbUsername,
                     Common.dbPassword
             );
@@ -41,11 +44,9 @@ public class DatabaseUtil {
 
     public static String currentDate() {
         Date date = new Date();
-
         SimpleDateFormat ft =
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dateTO = ft.format(date);
-
         return dateTO;
     }
 

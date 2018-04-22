@@ -7,8 +7,8 @@ import com.google.gson.GsonBuilder;
 
 import com.google.gson.stream.JsonReader;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.AddReviewMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.AddReviewMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 
 import java.io.StringReader;
 

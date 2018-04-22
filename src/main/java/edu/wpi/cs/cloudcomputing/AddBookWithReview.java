@@ -4,11 +4,10 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.AddBookWithReviewMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.AddBookWithReviewMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 
 /**
  * Created by tonggezhu on 3/2/18.

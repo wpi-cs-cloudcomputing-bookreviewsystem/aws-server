@@ -4,13 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.AddReviewMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.ThumbUpReviewMessage;
-
-import java.io.StringReader;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ThumbUpReviewMessage;
 
 /**
  * Created by tonggezhu on 3/4/18.

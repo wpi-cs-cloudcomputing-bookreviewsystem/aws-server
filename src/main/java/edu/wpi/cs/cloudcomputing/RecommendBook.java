@@ -6,8 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
 import edu.wpi.cs.cloudcomputing.controller.UserManager;
-import edu.wpi.cs.cloudcomputing.messages.RecommendBookMessage;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.RecommendBookMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.model.Book;
 
 import java.util.List;

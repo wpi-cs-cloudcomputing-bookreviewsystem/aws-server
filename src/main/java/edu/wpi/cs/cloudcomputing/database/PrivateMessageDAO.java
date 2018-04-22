@@ -17,29 +17,20 @@ import java.util.Set;
  * Created by tonggezhu on 3/7/18.
  */
 public class PrivateMessageDAO {
-//    DatabaseUtil databaseUtil;
-//
-//    public PrivateMessageDAO() {
-//        this.databaseUtil = new DatabaseUtil();
-//    }
 
     public List<Book> getAllBooks(String email) throws Exception{
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
+
         Set<Book> bookList = new HashSet<>();
         try {
             String query = "SELECT * FROM Private_Message WHERE pm_to_user_id=?;";
             PreparedStatement statement = DatabaseUtil.getConnection().prepareStatement(query);
             statement.setString(1, email);
-            System.out.println(statement);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 if (resultSet.getString("pm_type").equals(Common.RECOMMANDATION)) {
                     String content = resultSet.getString("pm_content");
                     Gson gson = new Gson();
                     Book book = gson.fromJson(content,Book.class);
-                    System.out.println(content);
                     bookList.add(book);
                 }
             }
@@ -54,9 +45,7 @@ public class PrivateMessageDAO {
     }
 
     public List<PrivateMessage> getInboxByUserEmail(String email) throws Exception {
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
+
         List<PrivateMessage> inboxMessages = new ArrayList<>();
         try {
             PrivateMessage message = null;
@@ -84,9 +73,6 @@ public class PrivateMessageDAO {
 
     public void addPrivateMessage(PrivateMessage message) throws Exception {
 
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
         try {
             String date = DatabaseUtil.currentDate();
             String query = "INSERT INTO Private_Message (pm_id, pm_from_user_id, pm_to_user_id, pm_title, pm_content, pm_type, pm_status, pm_datetime) values ( ? , ?, ? ,?, ? , ? , ? , STR_TO_DATE( ?, '%Y-%m-%d %H:%i:%s'))";
@@ -99,7 +85,6 @@ public class PrivateMessageDAO {
             statement.setString(6, message.getType());
             statement.setString(7, message.getStatus());
             statement.setString(8, date);
-            System.out.println(statement);
             statement.execute();
             statement.close();
         } catch (Exception e) {
@@ -108,9 +93,6 @@ public class PrivateMessageDAO {
     }
 
     public void deletePrivateMessage(String pmId) throws Exception {
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
         try {
             Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "DELETE FROM Private_Message WHERE pm_id='" + pmId + "';";
@@ -122,13 +104,10 @@ public class PrivateMessageDAO {
     }
 
     public void readPrivateMessage(String pmId) throws Exception {
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
+
         try {
             Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "UPDATE Private_Message SET pm_status='" + Common.READ + "' WHERE pm_id='" + pmId + "';";
-            System.out.println(query);
             statement.execute(query);
             statement.close();
         } catch (Exception e) {
@@ -137,9 +116,6 @@ public class PrivateMessageDAO {
     }
 
     public void ignorePrivateMessage(String pmId) throws Exception {
-//        if (databaseUtil.conn == null || databaseUtil.conn.isClosed()) {
-//            databaseUtil.initDBConnection();
-//        }
         try {
             Statement statement = DatabaseUtil.getConnection().createStatement();
             String query = "UPDATE Private_Message SET pm_status='" + Common.IGNORE + "' WHERE pm_id='" + pmId + "';";

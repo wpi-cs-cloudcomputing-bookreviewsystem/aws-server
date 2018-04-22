@@ -8,9 +8,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import edu.wpi.cs.cloudcomputing.database.UserDAO;
 import edu.wpi.cs.cloudcomputing.database.UserNetworkDAO;
-import edu.wpi.cs.cloudcomputing.messages.AWSLoginResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserLoginMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserRegisterMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.AWSLoginResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.UserLoginMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.UserRegisterMessage;
 import edu.wpi.cs.cloudcomputing.model.User;
 
 import java.util.ArrayList;

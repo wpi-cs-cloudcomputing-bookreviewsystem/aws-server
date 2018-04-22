@@ -5,8 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.wpi.cs.cloudcomputing.controller.MessageManager;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
-import edu.wpi.cs.cloudcomputing.messages.UserIdMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.UserIdMessage;
 
 
 /**
@@ -31,8 +31,9 @@ public class ListAllRecommendBook implements RequestHandler<Object, String> {
         try {
             message = gson.fromJson(input.toString(), UserIdMessage.class);
             if (message == null || message.getEmail() == null) {
-                throw new Exception();}
-        }catch (Exception ex) {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE in translate input");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);
@@ -42,8 +43,7 @@ public class ListAllRecommendBook implements RequestHandler<Object, String> {
             String booklist = messageManager.getRecommendBooks(message.getEmail());
             responseMsg.setStatus("SUCCESS");
             responseMsg.setContent(booklist);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             responseMsg.setStatus("FAILURE");
             responseMsg.setContent(ex.getMessage());
             return gson.toJson(responseMsg);

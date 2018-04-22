@@ -5,15 +5,10 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.wpi.cs.cloudcomputing.controller.RatingManager;
-import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.AddRatingMessage;
-import edu.wpi.cs.cloudcomputing.messages.AddReviewMessage;
-import edu.wpi.cs.cloudcomputing.messages.RatingBookResponse;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.AddRatingMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.RatingBookResponse;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 
-/**
- * Created by tonggezhu on 3/2/18.
- */
 public class RatingBook implements RequestHandler<Object, String> {
     Gson gson;
     AddRatingMessage addRatingMessage;

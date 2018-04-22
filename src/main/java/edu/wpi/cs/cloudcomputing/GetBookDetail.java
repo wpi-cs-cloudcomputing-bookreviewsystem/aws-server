@@ -8,8 +8,8 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.cloudcomputing.controller.BookManager;
 import edu.wpi.cs.cloudcomputing.controller.RatingManager;
 import edu.wpi.cs.cloudcomputing.controller.ReviewManager;
-import edu.wpi.cs.cloudcomputing.messages.GetBookDetailRequest;
-import edu.wpi.cs.cloudcomputing.messages.ResponseMessage;
+import edu.wpi.cs.cloudcomputing.model.messages.GetBookDetailRequest;
+import edu.wpi.cs.cloudcomputing.model.messages.ResponseMessage;
 import edu.wpi.cs.cloudcomputing.model.Book;
 import edu.wpi.cs.cloudcomputing.model.Review;
 

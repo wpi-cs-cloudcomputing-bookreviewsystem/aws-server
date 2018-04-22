@@ -1,6 +1,5 @@
 package edu.wpi.cs.cloudcomputing.model;
 
-import java.rmi.server.UID;
 
 public class PrivateMessage {
 

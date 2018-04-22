@@ -59,7 +59,7 @@ public class TestUtils {
 
     private static final DateTimeFormatter dateTimeFormatter =
             ISODateTimeFormat.dateTime()
-                        .withZone(new FixedDateTimeZone("GMT", "GMT", 0, 0));
+                    .withZone(new FixedDateTimeZone("GMT", "GMT", 0, 0));
 
     /**
      * Helper method that parses a JSON object from a resource on the classpath

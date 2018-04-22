@@ -1,10 +1,10 @@
 package edu.wpi.cs.cloudcomputing.utils;
 
 public class Common {
-    public static final String access_key = "AKIAIPDYTGIEF25CQ3EQ";
-    public static final String secret_key = "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";
-    public static final String cognito_pool_id = "us-east-1_0RyMdDKts";
-    public static final String cognito_client_id = "m8rrod98dvdpvue0r8uhl8vo0";
+    public static final String access_key = null;
+    public static final String secret_key = null;
+    public static final String cognito_pool_id = null;
+    public static final String cognito_client_id = null;
 
     public final static String NOT_LOGGED_IN = "NOT LOGGED IN";
     public final static String LOGGED_IN = "LOGGED IN";
@@ -46,7 +46,7 @@ public class Common {
     public final static String rdsMySqlDatabasePort = "3306";
     public final static String dbName = "BookReviewDB";
     public final static String multiQuerirs = "?allowMultiQueries=true";
-    public final static String dbUsername = "admin";
-    public final static String dbPassword = "Bookreviewadmin";
+    public final static String dbUsername = null;
+    public final static String dbPassword = null;
 
 }

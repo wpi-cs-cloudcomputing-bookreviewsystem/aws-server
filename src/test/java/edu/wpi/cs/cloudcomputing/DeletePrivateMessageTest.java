@@ -25,8 +25,6 @@ public class DeletePrivateMessageTest {
 
     private Context createContext() {
         TestContext ctx = new TestContext();
-
-        // TODO: customize your context here if needed.
         ctx.setFunctionName("Your Function Name");
 
         return ctx;
@@ -40,8 +38,6 @@ public class DeletePrivateMessageTest {
 
         String output = handler.handleRequest(request, ctx);
         System.out.println(output);
-        // TODO: validate output here if needed.
-//        Assert.assertEquals("Hello from Lambda!", output);
     }
 
 }
